@@ -1,0 +1,433 @@
+
+
+<div class="naval-dashboard p-4 overflow-x-hidden">
+  <!-- Dashboard Tabs - Positioned above the header -->
+
+  <div class="command-header">
+    <div class="command-title-block">
+      <i class="fa-solid fa-tools"></i>
+      <div>
+        <h2>Naval Fleet Maintenance Dashboard</h2>
+        <p>Comprehensive fleet maintenance overview and analytics</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dashboard Content -->
+  <div class="dashboard-container w-full max-w-full" *ngIf="activeTab === 'dashboard'">
+    <!-- KPI Cards Section -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-8 w-full max-w-full">
+      <div 
+        *ngFor="let metric of kpiMetrics; let i = index"
+        class="cursor-pointer transition-all duration-300 transform hover:scale-105 hover:shadow-xl">
+        
+        <!-- Card 1: Total Equipment (Blue) -->
+        <div *ngIf="i === 0" class="bg-white shadow-md border-2 border-blue-200 p-6 relative overflow-hidden h-40">
+          <div class="absolute inset-y-0 left-0 w-1.5 bg-blue-500"></div>
+          <div class="flex items-center justify-between h-full">
+            <div class="flex-1">
+              <p class="text-sm font-medium text-gray-500">{{ metric.title }}</p>
+              <p class="text-4xl font-extrabold text-gray-900 mt-2">{{ metric.value }}</p>
+              <p class="text-blue-600 text-xs mt-2">{{ metric.description }}</p>
+            </div>
+            <div class="p-3 rounded-full bg-blue-100 text-blue-600 flex-shrink-0">
+              <i class="pi pi-sitemap text-2xl"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Active Tasks (Red) -->
+        <div *ngIf="i === 1" class="bg-white shadow-md border-2 border-red-200 p-6 relative overflow-hidden h-40">
+          <div class="absolute inset-y-0 left-0 w-1.5 bg-red-500"></div>
+          <div class="flex items-center justify-between h-full">
+            <div class="flex-1">
+              <p class="text-sm font-medium text-gray-500">{{ metric.title }}</p>
+              <p class="text-4xl font-extrabold text-gray-900 mt-2">{{ metric.value }}</p>
+              <p class="text-red-600 text-xs mt-2">{{ metric.description || 'Active maintenance tasks' }}</p>
+            </div>
+            <div class="p-3 rounded-full bg-red-100 text-red-600 flex-shrink-0">
+              <i class="pi pi-list text-2xl"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Open Defects (Green) -->
+        <div *ngIf="i === 2" class="bg-white shadow-md border-2 border-green-200 p-6 relative overflow-hidden h-40">
+          <div class="absolute inset-y-0 left-0 w-1.5 bg-green-500"></div>
+          <div class="flex items-center justify-between h-full">
+            <div class="flex-1">
+              <p class="text-sm font-medium text-gray-500">{{ metric.title }}</p>
+              <p class="text-4xl font-extrabold text-gray-900 mt-2">{{ metric.value }}</p>
+              <p class="text-green-600 text-xs mt-2">{{ metric.description || 'Open defects across fleet' }}</p>
+            </div>
+            <div class="p-3 rounded-full bg-green-100 text-green-600 flex-shrink-0">
+              <i class="pi pi-exclamation-circle text-2xl"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4: Equipment Fit Progress (Purple) -->
+        <div *ngIf="i === 3" class="bg-white shadow-md border-2 border-purple-200 p-6 relative overflow-hidden h-40">
+          <div class="absolute inset-y-0 left-0 w-1.5 bg-purple-500"></div>
+          <div class="flex items-center justify-between h-full">
+            <div class="flex-1">
+              <p class="text-sm font-medium text-gray-500">{{ metric.title }}</p>
+              <p class="text-4xl font-extrabold text-gray-900 mt-2">{{ metric.value }}</p>
+              <p class="text-purple-600 text-xs mt-2">{{ metric.description || 'Equipment fit progress' }}</p>
+            </div>
+            <div class="p-3 rounded-full bg-purple-100 text-purple-600 flex-shrink-0">
+              <i class="pi pi-percentage text-2xl"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 5: Task Completion Rate (Orange) -->
+        <div *ngIf="i === 4" class="bg-white shadow-md border-2 border-orange-200 p-6 relative overflow-hidden h-40">
+          <div class="absolute inset-y-0 left-0 w-1.5 bg-orange-500"></div>
+          <div class="flex items-center justify-between h-full">
+            <div class="flex-1">
+              <p class="text-sm font-medium text-gray-500">{{ metric.title }}</p>
+              <p class="text-4xl font-extrabold text-gray-900 mt-2">{{ metric.value }}</p>
+              <p class="text-orange-600 text-xs mt-2">{{ metric.description || 'Task completion rate' }}</p>
+            </div>
+            <div class="p-3 rounded-full bg-orange-100 text-orange-600 flex-shrink-0">
+              <i class="pi pi-check-circle text-2xl"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- Filters -->
+    <!-- <div class="dashboard-header w-full max-w-full">
+      <div class="filter-group">
+        <p-dropdown [options]="(commands$ | async) ?? []" [(ngModel)]="selectedCommand" placeholder="Command"
+          optionLabel="label" optionValue="value" (onChange)="onCommandChange()" [showClear]="true"
+          styleClass="filter-dropdown"></p-dropdown>
+
+        <p-dropdown [options]="filteredShips" [(ngModel)]="selectedShip" placeholder="Ship" optionLabel="label"
+          optionValue="value" [disabled]="!selectedCommand" (onChange)="onShipChange()" [showClear]="true"
+          styleClass="filter-dropdown"></p-dropdown>
+
+        <p-dropdown [options]="(departments$ | async) ?? []" [(ngModel)]="selectedDept" placeholder="Department"
+          optionLabel="label" optionValue="value" [disabled]="!selectedShip" (onChange)="onDeptChange()"
+          [showClear]="true" styleClass="filter-dropdown"></p-dropdown>
+
+        <button pButton label="Apply" icon="pi pi-check" (click)="applyFilters()" class="p-ml-2 btn-app"></button>
+        <button pButton label="Clear" icon="pi pi-times" (click)="clearFilters()" class="p-ml-2 btn-app"></button>
+      </div>
+    </div>
+
+    <div class="w-full bg-white p-3 rounded-xl shadow-lg">
+      <div class="w-full ">
+        <app-ocrc [menuExpanded]="menuExpanded"></app-ocrc>
+      </div>
+      <div class="chart-container mt-3">
+        <app-defect-list
+      [command]="selectedCommand !== null ? selectedCommand.toString() : null"
+      [ship]="selectedShip !== null ? selectedShip.toString() : null"
+      [dept]="selectedDept !== null ? selectedDept.toString() : null"
+    ></app-defect-list>
+      </div>
+    </div> -->
+
+    <div class="charts-section w-full max-w-full mt-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-white shadow-md border-2 border-blue-200 p-6 rounded-lg">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">OPDEF Chart</h3>
+          <div class="chart-container">
+            <!-- Convert selectedCommand, selectedShip, selectedDept to string if not null -->
+            <app-opdef [command]="selectedCommand !== null ? selectedCommand.toString() : null"
+              [ship]="selectedShip !== null ? selectedShip.toString() : null"
+              [dept]="selectedDept !== null ? selectedDept.toString() : null" [dateRange]="dateRange"></app-opdef>
+          </div>
+        </div>
+        <div class="bg-white shadow-md border-2 border-green-200 p-6 rounded-lg">
+          <h3 class="text-xl font-semibold text-gray-900 mb-4">Frequent Defects</h3>
+          <div class="chart-container">
+            <app-frequent-defects [chartData]="frequentDefectData"></app-frequent-defects>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Fleet Status Section -->
+     <div class="bg-white p-6 shadow-md border-2 border-purple-200 rounded-lg w-full max-w-full mt-8">
+
+       <div class="fleet-status-header-actions w-full max-w-full">
+         <h2>Fleet Status</h2>
+         <div class="action-buttons">
+           <button pButton icon="pi pi-plus" label="Add Defect" class="btn-primary" (click)="addNewDefect()"></button>
+           <button pButton icon="pi pi-book" label="Log Maintenance" class="btn-primary"
+             (click)="logMaintenance()"></button>
+           <button pButton icon="pi pi-eye" label="View Equipment Fit" class="btn-primary"
+             (click)="viewEquipmentFit()"></button>
+           <button *ngIf="isApprover" pButton icon="pi pi-check-circle" label="Approve Plan" class="btn-primary"
+             (click)="showApprovePlanDialog = true"></button>
+         </div>
+       </div>
+   
+       <!-- Fleet Status Table -->
+       <table border="1" class="w-full mb-5 border-collapse border border-gray-300 max-w-full">
+         <thead>
+           <tr class="border border-gray-300">
+             <th class="border border-gray-300">Ship</th>
+             <th class="border border-gray-300">Readiness</th>
+             <th class="border border-gray-300">Open Defects</th>
+             <th class="border border-gray-300">Next Maintenance</th>
+             <th class="border border-gray-300">Status</th>
+           </tr>
+         </thead>
+         <tbody>
+           <tr *ngFor="let ship of fleetStatus" class="border border-gray-300">
+             <td class="border border-gray-300">{{ ship.ship }}</td>
+             <td class="border border-gray-300">
+               <p-progressBar [value]="ship.readiness || 0" styleClass="custom-progress"
+                 [showValue]="true"></p-progressBar>
+             </td>
+             <td class="border border-gray-300">{{ ship.defects }}</td>
+             <td class="border border-gray-300">{{ ship.maintenance }}</td>
+             <td class="border border-gray-300">
+               <span class="status-badge" [ngClass]="getStatusClass(ship.readiness)">
+                 <i class="pi"
+                   [ngClass]="ship.readiness >=90 ? 'pi-check-circle' : (ship.readiness>=75 ? 'pi-exclamation-circle':'pi-times-circle')"></i>
+                 {{ ship.readiness >=90 ? 'Operational' : (ship.readiness>=75 ? 'Limited' : 'In Maintenance') }}
+               </span>
+             </td>
+           </tr>
+           <tr *ngIf="!fleetStatus || fleetStatus.length === 0" class="border border-gray-300">
+             <td colspan="5" class="p-text-center table-placeholder border border-gray-300">
+               <i class="pi pi-database"></i>
+               <p>No fleet status data available.</p>
+             </td>
+           </tr>
+         </tbody>
+       </table>
+     </div>
+  </div>
+</div>
+
+
+
+<!-- Dialogs -->
+
+<!-- Add New Defect Dialog using Reusable Form -->
+<app-add-form
+  *ngIf="showDefectsFormDialog"
+  [open]="showDefectsFormDialog"
+  [formConfig]="defectsFormConfig"
+  [formData]="newDefect"
+  [fromTitle]="'Add New Defect'"
+  [submitLabel]="'Submit Defect'"
+  (onOpenChange)="showDefectsFormDialog = $event"
+  (onSubmit)="handleDefectsFormSubmit($event)"
+></app-add-form>
+
+<!-- Log Maintenance Dialog -->
+<p-dialog header="Log Maintenance Activity" [(visible)]="showLogMaintenanceDialog"
+  [style]="{width: '650px', maxWidth: '90vw'}" styleClass="custom-dialog"
+  [breakpoints]="{'960px': '75vw', '640px': '90vw'}" [contentStyle]="{'max-height': '80vh', 'overflow': 'auto'}">
+
+  <div class="dialog-content p-fluid p-formgrid p-grid p-3 gap-3">
+    <!-- Maintenance Type -->
+    <div class="p-field p-col-12 p-md-6">
+      <label for="maintenanceType" class="p-text-bold">Maintenance Type <span class="required-asterisk">*</span></label>
+      <p-dropdown inputId="maintenanceType" [options]="maintenanceTypeOptions"
+        [(ngModel)]="maintenanceLog.maintenanceType" placeholder="Select Type" optionLabel="label" optionValue="value"
+        [required]="true" styleClass="drop"></p-dropdown>
+    </div>
+
+    <!-- Maintenance Frequency -->
+    <div class="p-field p-col-12 p-md-6">
+      <label for="maintenanceFrequency" class="p-text-bold">Frequency <span class="required-asterisk">*</span></label>
+      <p-dropdown inputId="maintenanceFrequency" [options]="maintenanceFrequencyOptions"
+        [(ngModel)]="maintenanceLog.frequency" placeholder="Select Frequency" optionLabel="label" optionValue="value"
+        [required]="true" styleClass="drop"></p-dropdown>
+    </div>
+
+    <div class="p-field p-col-12 p-md-6">
+      <label for="maintenanceTask" class="p-text-bold">Task Title <span class="required-asterisk">*</span></label>
+      <input id="maintenanceTask" type="text" class="border-2 border-gray-500 rounded-sm bg-white" pInputText [(ngModel)]="maintenanceLog.task"
+        placeholder="e.g., Daily engine inspection" style="width: 100%;" [required]="true" />
+    </div>
+
+
+    <!-- Equipment -->
+    <div class="p-field p-col-12 p-md-6">
+      <label for="maintenanceEquipment" class="p-text-bold">Equipment/System <span
+          class="required-asterisk">*</span></label>
+      <p-dropdown inputId="maintenanceEquipment" [options]="equipmentOptions" [(ngModel)]="maintenanceLog.equipment"
+        placeholder="Select Equipment/System" optionLabel="label" optionValue="value" [required]="true"
+        styleClass="drop"></p-dropdown>
+    </div>
+
+    <!-- Assigned Personnel -->
+    <div class="p-field p-col-12 p-md-6">
+      <label for="assignedPersonnel" class="p-text-bold">Assigned Personnel <span
+          class="required-asterisk">*</span></label>
+      <p-dropdown inputId="assignedPersonnel" [options]="personnelOptions"
+        [(ngModel)]="maintenanceLog.assignedPersonnel" placeholder="Select Personnel" optionLabel="label"
+        optionValue="value" [required]="true" styleClass="drop"></p-dropdown>
+    </div>
+
+    <!-- Hours Spent -->
+    <div class="p-field p-col-12 p-md-6">
+      <label for="maintenanceHours" class="p-text-bold">Hours Spent <span class="required-asterisk">*</span></label>
+      <p-inputNumber id="maintenanceHours" class="p-inputtext" [(ngModel)]="maintenanceLog.hours" placeholder="e.g., 8"
+        style="width: 100%;" mode="decimal" [required]="true"></p-inputNumber>
+    </div>
+
+    <!-- Date of Completion -->
+    <div class="p-field p-col-12 p-md-6">
+      <label for="completionDate" class="p-text-bold">Date of Completion <span
+          class="required-asterisk">*</span></label>
+      <p-calendar id="completionDate" [(ngModel)]="maintenanceLog.completionDate" [readonlyInput]="true"
+        dateFormat="dd/mm/yy" [required]="true" styleClass="drop"></p-calendar>
+    </div>
+
+    <!-- Spares Used -->
+    <div class="p-field p-col-12">
+      <label for="sparesUsed" class="p-text-bold">Spares Used (Comma Separated)</label>
+      <textarea id="sparesUsed" pInputTextarea rows="2" [(ngModel)]="maintenanceLog.sparesUsed"
+        placeholder="e.g., Filter A, Gasket B"></textarea>
+    </div>
+
+    <!-- Remarks / Feedback -->
+    <div class="p-field p-col-12">
+      <label for="maintenanceRemarks" class="p-text-bold">Remarks / Feedback</label>
+      <textarea id="maintenanceRemarks" pInputTextarea rows="3" [(ngModel)]="maintenanceLog.remarks"
+        placeholder="Any additional notes or observations."></textarea>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <ng-template pTemplate="footer">
+    <div class="footer-actions">
+      <button pButton label="Cancel" icon="pi pi-times" class="p-button-secondary p-button-text"
+        (click)="showLogMaintenanceDialog = false"></button>
+      <button pButton label="Submit Log" icon="pi pi-check" class="p-button-primary"
+        (click)="submitMaintenanceLog()"></button>
+    </div>
+  </ng-template>
+
+</p-dialog>
+
+<!-- Equipment Fit Dialog -->
+<p-dialog header="View Equipment Fit" [(visible)]="showEquipmentFitDialog" [style]="{ width: '80vw' }"
+  styleClass="custom-dialog" [modal]="true" [closable]="true">
+
+  <div class="equipment-fit-view">
+    <div class="p-fluid p-formgrid p-grid p-3 gap-3 mb-4">
+      <div class="p-field p-col-12 p-md-6">
+        <label for="efCommand" class="p-text-bold">Command</label>
+        <p-dropdown inputId="efCommand" [options]="(commands$ | async) ?? []" [(ngModel)]="selectedEFCommand"
+          placeholder="Select Command" optionLabel="label" optionValue="value" [showClear]="true"></p-dropdown>
+      </div>
+      <div class="p-field p-col-12 p-md-6">
+        <label for="efShip" class="p-text-bold">Ship</label>
+        <p-dropdown inputId="efShip" [options]="filteredShips" [(ngModel)]="selectedEFShip" placeholder="Select Ship"
+          optionLabel="label" optionValue="value" [showClear]="true"></p-dropdown>
+      </div>
+    </div>
+
+    <p-table [value]="equipmentList" styleClass="p-datatable-sm custom-table" [responsiveLayout]="'scroll'"
+      scrollHeight="60vh">
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="min-width: 200px;">🔧 Equipment Name</th>
+          <th style="min-width: 150px;">📦 NSN/Part No.</th>
+          <th style="min-width: 120px;">🏢 Department</th>
+          <th style="min-width: 120px;">🚢 Compartment</th>
+          <th style="min-width: 150px;">📋 Status</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-equip>
+        <tr>
+          <td>{{ equip.name }}</td>
+          <td>{{ equip.nsn || equip.partNumber || 'N/A' }}</td>
+          <td>{{ equip.department || 'N/A' }}</td>
+          <td>{{ equip.compartment || 'N/A' }}</td>
+          <td>
+            <span class="badge status-badge" [ngClass]="getStatusClassd(equip.status)">
+              {{ equip.status }}
+            </span>
+          </td>
+        </tr>
+      </ng-template>
+      <!-- Add placeholder if table data is empty -->
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="5" class="p-text-center">
+            <div class="table-placeholder">
+              <i class="pi pi-database"></i>
+              <p>No equipment fit data available for selected filters.</p>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div style="display: flex; justify-content: flex-end;">
+      <button pButton label="Close" icon="pi pi-times" class="p-button-text p-button-secondary"
+        (click)="showEquipmentFitDialog = false">
+      </button>
+    </div>
+  </ng-template>
+</p-dialog>
+
+<!-- Approve Plan Dialog -->
+<p-dialog header="Approve Maintenance Plan" [(visible)]="showApprovePlanDialog" [style]="{ width: '800px' }"
+  styleClass="custom-dialog" [modal]="true" [closable]="true">
+
+  <div class="approval-content p-fluid p-formgrid p-grid p-3 gap-3">
+    <p class="p-col-12" style="margin-bottom: 1rem;">Please review the details of the maintenance plan before proceeding
+      with approval or rejection:</p>
+
+    <div class="maintenance-plan-summary p-col-12 p-mb-4">
+      <p><strong>🆔 Plan ID:</strong> MP-2023-045</p>
+      <p><strong>🚢 Ship:</strong> INS Vikrant</p>
+      <p><strong>🗓 Proposed Date:</strong> 2025-07-15 to 2025-07-20</p>
+      <p><strong>📝 Total Tasks:</strong> 18</p>
+      <p><strong>⏱ Estimated Hours:</strong> 120</p>
+      <p><strong>🧑‍🔧 Responsible Dept.:</strong> Engineering</p>
+    </div>
+
+    <!-- Approver Comments -->
+    <div class="p-field p-col-12">
+      <label for="approverComments" class="p-text-bold">Reviewer Comments</label>
+      <textarea id="approverComments" pInputTextarea rows="4" [(ngModel)]="approverComments"
+        placeholder="Add comments regarding the plan, approval, or rejection reasons."></textarea>
+    </div>
+
+    <!-- Approval Status (if applicable, read-only for current action) -->
+    <div class="p-field p-col-12 p-md-6" *ngIf="false"> <!-- Example of conditional field -->
+      <label for="approvalStatus" class="p-text-bold">Current Status</label>
+      <input id="approvalStatus" type="text" pInputText value="Pending Review" [readOnly]="true" class="border-2 border-gray-500 rounded-sm bg-white"
+        style="width:100%" />
+    </div>
+
+    <!-- Approver's Name (auto-filled) -->
+    <div class="p-field p-col-12 p-md-6" *ngIf="false"> <!-- Example of auto-filled field -->
+      <label for="approverName" class="p-text-bold">Approver</label>
+      <input id="approverName" type="text" pInputText value="CAPT. J. Smith" [readOnly]="true" class="border-2 border-gray-500 rounded-sm bg-white"
+        style="width:100%" />
+    </div>
+
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="p-d-flex p-jc-end p-ai-center p-gap-2 p-px-3 pb-2">
+      <button pButton label="Reject" icon="pi pi-times-circle" class="p-button-danger p-button-outlined"
+        (click)="showApprovePlanDialog = false">
+      </button>
+      <button pButton label="Approve" icon="pi pi-check-circle" class="p-button-success"
+        (click)="approveMaintenancePlan()">
+      </button>
+    </div>
+  </ng-template>
+</p-dialog>

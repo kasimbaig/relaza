@@ -1,0 +1,530 @@
+// Theme colors
+$primary-color: #003161;
+$secondary-color: #A6CCF3;
+$accent-color: #1e88e5;
+$text-light: #ffffff;
+$text-dark: #003161;
+$border-color: #b3d4fc;
+$hover-color: #004ba0;
+
+.about-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  min-height: 100%;
+}
+
+.organization-chart {
+  width: 100%;
+  max-width: 1000px;
+  background-color: #e0f2fe;
+  border: 2px solid $secondary-color;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 49, 97, 0.15);
+  color: $text-dark;
+}
+
+.chart-header {
+  text-align: center;
+  margin-bottom: 1rem;
+  
+  h2 {
+    background: linear-gradient(135deg, $primary-color 0%, #002147 100%);
+    color: $secondary-color;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    display: inline-block;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    box-shadow: 0 2px 8px rgba(0, 49, 97, 0.3);
+  }
+  
+  .chart-info {
+    p {
+      margin: 0.1rem 0;
+      color: $text-dark;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+  }
+}
+
+.chart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.chart-level {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.chart-box {
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.7rem;
+  min-width: 140px;
+  box-shadow: 0 1px 4px rgba(0, 49, 97, 0.2);
+  line-height: 1.2;
+  
+  &.grey-box {
+    background: linear-gradient(135deg, $primary-color 0%, #002147 100%);
+    color: $text-light;
+    border: 1px solid rgba(166, 204, 243, 0.3);
+  }
+  
+  &.blue-box {
+    background: linear-gradient(135deg, $accent-color 0%, #1976d2 100%);
+    color: $text-light;
+    border: 1px solid rgba(166, 204, 243, 0.3);
+  }
+  
+  &.green-box {
+    background: linear-gradient(135deg, #2e7d32 0%, #388e3c 100%);
+    color: $text-light;
+    border: 1px solid rgba(166, 204, 243, 0.3);
+  }
+}
+
+// Enhanced Arrow Styles
+.vertical-line {
+  position: relative;
+  width: 6px;
+  height: 35px;
+  background: conic-gradient(from 0deg, $primary-color, $secondary-color, $primary-color);
+  margin: 0.2rem auto;
+  border-radius: 3px;
+  box-shadow: 0 2px 8px rgba(0, 49, 97, 0.4);
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 12px solid $primary-color;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 12px solid $primary-color;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  }
+}
+
+.vertical-line-center {
+  position: relative;
+  width: 6px;
+  height: 35px;
+  background: conic-gradient(from 0deg, $primary-color, $secondary-color, $primary-color);
+  margin: 0.2rem auto;
+  border-radius: 3px;
+  box-shadow: 0 2px 8px rgba(0, 49, 97, 0.4);
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 12px solid $primary-color;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  }
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 12px solid $primary-color;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  }
+}
+
+.connection-lines {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 0.2rem auto;
+  height: 45px;
+  
+  .horizontal-line {
+    position: absolute;
+    top: 50%;
+    left: 20%;
+    right: 20%;
+    height: 6px;
+    background: conic-gradient(from 90deg, $primary-color, $secondary-color, $primary-color);
+    transform: translateY(-50%);
+    border-radius: 3px;
+    box-shadow: 0 2px 8px rgba(0, 49, 97, 0.4);
+    
+    &::before {
+      content: '';
+      position: absolute;
+      left: -10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      border-right: 12px solid $primary-color;
+      filter: drop-shadow(2px 0 4px rgba(0, 0, 0, 0.3));
+      animation: slideRight 2s infinite;
+    }
+    
+    &::after {
+      content: '';
+      position: absolute;
+      right: -10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      border-left: 12px solid $primary-color;
+      filter: drop-shadow(-2px 0 4px rgba(0, 0, 0, 0.3));
+      animation: slideLeft 2s infinite;
+    }
+  }
+  
+  .vertical-branch {
+    position: absolute;
+    width: 6px;
+    height: 30px;
+    background: conic-gradient(from 0deg, $primary-color, $secondary-color, $primary-color);
+    top: 50%;
+    border-radius: 3px;
+    box-shadow: 0 2px 8px rgba(0, 49, 97, 0.4);
+    
+    &.left {
+      left: 20%;
+      transform: translateY(-50%);
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-bottom: 10px solid $primary-color;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+      }
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-top: 10px solid $primary-color;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+      }
+    }
+    
+    &.right {
+      right: 20%;
+      transform: translateY(-50%);
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-bottom: 10px solid $primary-color;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+      }
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-top: 10px solid $primary-color;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+      }
+    }
+  }
+}
+
+// Arrow Animations
+@keyframes slideRight {
+  0%, 100% {
+    transform: translateY(-50%) translateX(0);
+  }
+  50% {
+    transform: translateY(-50%) translateX(3px);
+  }
+}
+
+@keyframes slideLeft {
+  0%, 100% {
+    transform: translateY(-50%) translateX(0);
+  }
+  50% {
+    transform: translateY(-50%) translateX(-3px);
+  }
+}
+
+.admin-level {
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  justify-content: center;
+  
+  .admin-support {
+    display: flex;
+    gap: 0.8rem;
+  }
+  
+  .oic-box {
+    margin-left: 1rem;
+  }
+}
+
+.functional-level {
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-top: 0.5rem;
+  
+  .functional-areas {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .functional-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    min-width: 180px;
+    max-width: 200px;
+    
+    .area-children {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      text-align: center;
+      width: 100%;
+      
+      .child-item {
+        background: linear-gradient(135deg, rgba(166, 204, 243, 0.1) 0%, rgba(179, 212, 252, 0.1) 100%);
+        color: $text-dark;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.65rem;
+        font-weight: 500;
+        border: 1px solid rgba(166, 204, 243, 0.3);
+        line-height: 1.2;
+      }
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 1200px) {
+  .organization-chart {
+    padding: 1rem;
+    max-width: 900px;
+  }
+  
+  .chart-level {
+    gap: 0.8rem;
+  }
+  
+  .functional-level .functional-areas {
+    gap: 0.6rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-content {
+    padding: 1rem;
+  }
+  
+  .organization-chart {
+    padding: 1rem;
+    max-width: 100%;
+  }
+  
+  .chart-level {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .admin-level {
+    .admin-support {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .oic-box {
+      margin-left: 0;
+      margin-top: 0.5rem;
+    }
+  }
+  
+  .functional-level .functional-areas {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  // Adjust arrow sizes for mobile
+  .vertical-line,
+  .vertical-line-center {
+    width: 2px;
+    height: 20px;
+    
+    &::after {
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 6px solid $primary-color;
+    }
+  }
+  
+  .connection-lines {
+    height: 30px;
+    
+    .horizontal-line {
+      height: 2px;
+      
+      &::before,
+      &::after {
+        border-top: 4px solid transparent;
+        border-bottom: 4px solid transparent;
+        border-right: 6px solid $primary-color;
+        border-left: 6px solid $primary-color;
+      }
+    }
+    
+    .vertical-branch {
+      width: 2px;
+      height: 15px;
+      
+      &::after {
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+        border-top: 6px solid $primary-color;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .chart-box {
+    min-width: 120px;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.65rem;
+  }
+  
+  .chart-header h2 {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+  }
+  
+  .chart-header .chart-info p {
+    font-size: 0.7rem;
+  }
+  
+  // Further reduce arrow sizes for small screens
+  .vertical-line,
+  .vertical-line-center {
+    width: 2px;
+    height: 18px;
+    
+    &::after {
+      border-left: 3px solid transparent;
+      border-right: 3px solid transparent;
+      border-top: 5px solid $primary-color;
+    }
+  }
+  
+  .connection-lines {
+    height: 25px;
+    
+    .horizontal-line {
+      height: 2px;
+      
+      &::before,
+      &::after {
+        border-top: 3px solid transparent;
+        border-bottom: 3px solid transparent;
+        border-right: 5px solid $primary-color;
+        border-left: 5px solid $primary-color;
+      }
+    }
+    
+    .vertical-branch {
+      width: 2px;
+      height: 12px;
+      
+      &::after {
+        border-left: 3px solid transparent;
+        border-right: 3px solid transparent;
+        border-top: 5px solid $primary-color;
+      }
+    }
+  }
+}

@@ -1,0 +1,137 @@
+<aside [ngClass]="{
+    'simple-sidebar-expanded': expanded,
+    'simple-sidebar-collapsed': !expanded
+  }" class="simple-sidebar">
+
+  <!-- Simple Header -->
+  <div class="sidebar-header">
+    <div class="header-content">
+      <div class="brand-section">
+        <div class="logo-container">
+          <img src="/assets/indian-navy-emblem.png" alt="Indian Navy Emblem" class="navy-emblem" />
+        </div>
+        <div class="brand-info" *ngIf="expanded">
+          <p class="system-subtitle">Comprehensive Maintenance Management System</p>
+        </div>
+      </div>
+      <button class="collapse-button" (click)="toggleSidebar()" [attr.aria-label]="expanded ? 'Collapse sidebar' : 'Expand sidebar'">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path *ngIf="expanded" d="M15 18l-6-6 6-6"/>
+          <path *ngIf="!expanded" d="M9 18l6-6-6-6"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Navigation Menu -->
+  <nav class="sidebar-navigation">
+    <div class="nav-section">
+      <div class="nav-menu">
+        <ng-container *ngFor="let item of menuItems">
+          <div class="nav-item" [class.has-children]="item.hasChildren">
+            <button 
+              (click)="item.hasChildren && item.path ? toggleSubMenu(item.path) : (item.path && navigateTo(item.path))"
+              class="nav-button" 
+              [class.active]="item.path && isActive(item.path)"
+              [class.expanded]="item.path && openSubMenus[item.path]"
+            >
+              <div class="button-content">
+                <div class="icon-container">
+                  <i [ngClass]="item.icon" class="menu-icon"></i>
+                </div>
+                <div class="text-content" *ngIf="expanded">
+                  <span class="menu-label">{{ item.label }}</span>
+                  <span class="menu-description" *ngIf="item.description">{{ item.description }}</span>
+                </div>
+                <div class="expand-indicator" *ngIf="item.hasChildren && expanded">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6,9 12,15 18,9"></polyline>
+                  </svg>
+                </div>
+              </div>
+            </button>
+
+            <!-- Submenu -->
+            <div *ngIf="item.path && openSubMenus[item.path] && expanded" class="submenu">
+              <ng-container *ngFor="let subItem of item.children">
+                <div class="submenu-item" [class.has-children]="subItem.hasChildren">
+                  <button 
+                    (click)="subItem.hasChildren && subItem.path ? toggleSubMenu(subItem.path) : (subItem.path && navigateTo(subItem.path))"
+                    class="submenu-button" 
+                    [class.active]="subItem.path && isActive(subItem.path)"
+                    [class.expanded]="subItem.path && openSubMenus[subItem.path]"
+                  >
+                    <div class="button-content">
+                      <div class="icon-container small">
+                        <i [ngClass]="subItem.icon" class="menu-icon"></i>
+                      </div>
+                      <span class="menu-label">{{ subItem.label }}</span>
+                      <div class="expand-indicator" *ngIf="subItem.hasChildren">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <polyline points="6,9 12,15 18,9"></polyline>
+                        </svg>
+                      </div>
+                    </div>
+                  </button>
+
+                  <!-- Nested Submenu -->
+                  <div *ngIf="subItem.hasChildren && subItem.path && openSubMenus[subItem.path]" class="nested-submenu">
+                    <ng-container *ngFor="let nested of subItem.children">
+                      <button 
+                        (click)="nested.path && navigateTo(nested.path)"
+                        class="nested-button" 
+                        [class.active]="nested.path && isActive(nested.path)"
+                      >
+                        <div class="button-content">
+                          <div class="icon-container mini">
+                            <i [ngClass]="nested.icon" class="menu-icon"></i>
+                          </div>
+                          <span class="menu-label">{{ nested.label }}</span>
+                        </div>
+                      </button>
+                    </ng-container>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Footer Section -->
+  <div class="sidebar-footer">
+    <div class="footer-content">
+      <!-- User Profile -->
+      <!-- <div class="user-profile" *ngIf="expanded">
+        <div class="profile-avatar">
+          <div class="avatar-container">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+        </div>
+        <div class="profile-info">
+          <p class="user-name">Admin User</p>
+          <p class="user-role">Administrator</p>
+        </div>
+      </div> -->
+
+      <!-- Logout Button -->
+      <button (click)="logOut()" class="logout-button" [class.collapsed]="!expanded">
+        <div class="button-content">
+          <div class="icon-container">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16,17 21,12 16,7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+          </div>
+          <span *ngIf="expanded" class="logout-text">Sign Out</span>
+        </div>
+      </button>
+    </div>
+  </div>
+</aside>

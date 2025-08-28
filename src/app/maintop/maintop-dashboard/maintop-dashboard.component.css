@@ -1,0 +1,47 @@
+/* This component now uses Tailwind CSS classes only - no custom CSS needed */
+.maintop{
+    padding-bottom: 0% !important;
+}
+
+/* --- Header Styles - Matching Naval Fleet Maintenance Dashboard Exactly --- */
+.command-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background: linear-gradient(135deg, var(--primary-gradient-start) 0%, var(--primary-gradient-end) 100%);
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px var(--shadow-light);
+  border: 1px solid var(--border-light);
+  margin-bottom: 2rem;
+}
+
+.command-title-block {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.command-title-block i {
+  font-size: 1.5rem;
+  color: var(--text-white);
+  text-shadow: 0 2px 4px var(--shadow-dark);
+}
+
+.command-title-block h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--text-white);
+  font-weight: 600;
+  text-shadow: 0 2px 4px var(--shadow-dark);
+}
+
+.command-title-block p {
+  margin: 0;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+

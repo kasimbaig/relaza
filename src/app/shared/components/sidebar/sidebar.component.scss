@@ -1,0 +1,617 @@
+// Import clean fonts
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto:wght@400;500;700&display=swap');
+
+// Simple professional color palette
+$primary-blue: #003161;
+$secondary-blue: #003161;
+$accent-blue: #003161;
+$surface-white: #ffffff;
+$surface-light: #f8fafc;
+$surface-gray: #f1f5f9;
+$text-primary: #1e293b;
+$text-secondary: #475569;
+$text-muted: #64748b;
+$border-light: #e2e8f0;
+$border-medium: #cbd5e1;
+$success-green: #059669;
+$warning-orange: #d97706;
+$error-red: #dc2626;
+$shadow-light: rgba(0, 0, 0, 0.05);
+$shadow-medium: rgba(0, 0, 0, 0.1);
+
+// Utility mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin smooth-transition($property: all) {
+  transition: $property 0.2s ease-in-out;
+}
+
+@mixin simple-shadow {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+// Main simple sidebar
+.simple-sidebar {
+  height: 100vh;
+  background: $surface-white;
+  color: $text-primary;
+  position: relative;
+  overflow: hidden;
+  z-index: 1000;
+  border-right: 1px solid $border-light;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+
+  // Sidebar Header
+  .sidebar-header {
+    padding: 1.5rem;
+    background: linear-gradient(135deg, $primary-blue 0%, $secondary-blue 100%);
+    color: white;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+
+    .header-content {
+      @include flex-column;
+      gap: 1rem;
+
+      .brand-section {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        .logo-container {
+          width: 48px;
+          height: 48px;
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 8px;
+          padding: 8px;
+          @include flex-center;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+
+          .navy-emblem {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+          }
+        }
+
+        .brand-info {
+          .system-title {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 0 0.25rem 0;
+            color: white;
+            letter-spacing: 0.5px;
+          }
+
+          .system-subtitle {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.95);
+            margin: 0;
+            font-weight: 500;
+            line-height: 1.3;
+            font-family: 'Roboto', sans-serif;
+            letter-spacing: 0.3px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            
+            &:hover {
+              background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%);
+              border-color: rgba(255, 255, 255, 0.25);
+              transform: translateY(-1px);
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            }
+          }
+        }
+      }
+
+      .collapse-button {
+        align-self: flex-end;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 6px;
+        color: white;
+        padding: 0.5rem;
+        cursor: pointer;
+        @include smooth-transition(all);
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.2);
+          border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        svg {
+          display: block;
+        }
+      }
+    }
+  }
+
+  // Navigation Menu
+  .sidebar-navigation {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 0; // Important for flexbox scrolling
+    background: #a6ccf3; // Lighter version of #003161
+
+    // Custom scrollbar styling
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 3px;
+      
+      &:hover {
+        background: rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    &::-webkit-scrollbar-corner {
+      background: transparent;
+    }
+
+    // Firefox scrollbar styling
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+
+    .nav-section {
+      .section-header {
+        margin: 0 1.5rem 1rem 1.5rem;
+
+        .section-title {
+          font-size: 0.75rem;
+          font-weight: 600;
+          color: $text-muted;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          margin-bottom: 0.5rem;
+          display: block;
+        }
+
+        .section-divider {
+          height: 1px;
+          background: $border-light;
+        }
+      }
+
+      .nav-menu {
+        @include flex-column;
+        gap: 0.25rem;
+
+        .nav-item {
+                  .nav-button {
+          width: 100%;
+          background: transparent;
+          border: none;
+          color: $text-primary;
+          padding: 0.875rem 1.5rem;
+          cursor: pointer;
+          @include smooth-transition(all);
+          position: relative;
+
+          &:hover {
+            background: #8bb8e8; // Darker blue for hover
+            color: white;
+
+            .icon-container {
+              background: rgba(255, 255, 255, 0.2);
+              color: white;
+            }
+          }
+
+          &.active {
+            background: #5a9bd6; // Darker blue for active selection
+            color: white;
+            border-right: 3px solid $primary-blue;
+
+            .icon-container {
+              background: rgba(255, 255, 255, 0.2);
+              color: white;
+            }
+
+            .menu-label {
+              font-weight: 600;
+            }
+          }
+
+            .button-content {
+              display: flex;
+              align-items: center;
+              gap: 1rem;
+
+              .icon-container {
+                width: 40px;
+                height: 40px;
+                background: #e8f2fc; // Light blue instead of white
+                border-radius: 8px;
+                @include flex-center;
+                @include smooth-transition(all);
+                color: #2c3e50; // Darker color for better visibility
+                flex-shrink: 0;
+
+                &.small {
+                  width: 32px;
+                  height: 32px;
+                  border-radius: 6px;
+                }
+
+                &.mini {
+                  width: 24px;
+                  height: 24px;
+                  border-radius: 4px;
+                }
+
+                .menu-icon {
+                  font-size: 1.125rem;
+                }
+              }
+
+                              .text-content {
+                  flex: 1;
+                  text-align: left;
+
+                  .menu-label {
+                    display: block;
+                    font-size: 0.95rem;
+                    font-weight: 500;
+                    color: inherit;
+                    margin-bottom: 0.25rem;
+                  }
+
+                  .menu-description {
+                    display: block;
+                    font-size: 0.8rem;
+                    color: #2c3e50; // Darker color for better visibility
+                    line-height: 1.4;
+                  }
+                }
+
+              .expand-indicator {
+                color: $text-muted;
+                @include smooth-transition(transform);
+              }
+            }
+
+            &.expanded .expand-indicator {
+              transform: rotate(180deg);
+            }
+          }
+
+          // Submenu
+          .submenu {
+            background: $surface-light;
+            margin: 0.25rem 0 0.25rem 1rem;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid $border-light;
+
+            .submenu-item {
+              .submenu-button {
+                width: 100%;
+                background: transparent;
+                border: none;
+                color: $text-primary;
+                padding: 0.75rem 1.25rem;
+                cursor: pointer;
+                @include smooth-transition(all);
+
+                &:hover {
+                  background: rgba(30, 64, 175, 0.05);
+                  color: $primary-blue;
+
+                  .icon-container {
+                    background: rgba(30, 64, 175, 0.1);
+                    color: $primary-blue;
+                  }
+                }
+
+                &.active {
+                  background: rgba(30, 64, 175, 0.1);
+                  color: $primary-blue;
+
+                  .icon-container {
+                    background: rgba(30, 64, 175, 0.15);
+                    color: $primary-blue;
+                  }
+                }
+
+                .button-content {
+                  display: flex;
+                  align-items: center;
+                  gap: 0.75rem;
+
+                  .menu-label {
+                    flex: 1;
+                    font-size: 0.875rem;
+                    font-weight: 500;
+                    color: inherit;
+                  }
+                }
+              }
+
+              // Nested Submenu
+              .nested-submenu {
+                background: $surface-white;
+                margin: 0.25rem 0 0.25rem 1rem;
+                border-radius: 4px;
+                border: 1px solid $border-light;
+
+                .nested-button {
+                  width: 100%;
+                  background: transparent;
+                  border: none;
+                  color: $text-secondary;
+                  padding: 0.625rem 1.25rem;
+                  cursor: pointer;
+                  @include smooth-transition(all);
+
+                  &:hover {
+                    background: rgba(30, 64, 175, 0.05);
+                    color: $primary-blue;
+
+                    .icon-container {
+                      background: rgba(30, 64, 175, 0.1);
+                      color: $primary-blue;
+                    }
+                  }
+
+                  &.active {
+                    background: rgba(30, 64, 175, 0.1);
+                    color: $primary-blue;
+
+                    .icon-container {
+                      background: rgba(30, 64, 175, 0.15);
+                      color: $primary-blue;
+                    }
+                  }
+
+                  .button-content {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.75rem;
+
+                    .menu-label {
+                      flex: 1;
+                      font-size: 0.8rem;
+                      font-weight: 400;
+                      color: inherit;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Footer Section
+  .sidebar-footer {
+    padding: 1.5rem;
+    border-top: 1px solid $border-light;
+    background: #a6ccf3; // Same light blue as navigation
+    flex-shrink: 0;
+
+    .footer-content {
+      @include flex-column;
+      gap: 1rem;
+
+      .user-profile {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        background: $surface-white;
+        border-radius: 8px;
+        border: 1px solid $border-light;
+        @include simple-shadow;
+
+        .profile-avatar {
+          .avatar-container {
+            width: 40px;
+            height: 40px;
+            background: $primary-blue;
+            border-radius: 50%;
+            @include flex-center;
+            color: white;
+            @include simple-shadow;
+          }
+        }
+
+        .profile-info {
+          .user-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: $text-primary;
+            margin: 0 0 0.25rem 0;
+          }
+
+          .user-role {
+            font-size: 0.75rem;
+            color: $text-muted;
+            margin: 0;
+          }
+        }
+      }
+
+      .logout-button {
+        width: 100%;
+        background: $surface-white;
+        border: 1px solid $border-medium;
+        border-radius: 8px;
+        color: $error-red;
+        padding: 0.875rem;
+        cursor: pointer;
+        @include smooth-transition(all);
+        @include simple-shadow;
+
+        &:hover {
+          background: rgba(220, 38, 38, 0.05);
+          border-color: $error-red;
+          color: $error-red;
+        }
+
+        &.collapsed {
+          width: auto;
+          padding: 0.875rem;
+          border-radius: 50%;
+          aspect-ratio: 1;
+        }
+
+        .button-content {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          justify-content: center;
+
+          .logout-text {
+            font-size: 0.875rem;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Expanded state
+.simple-sidebar-expanded {
+  width: 280px;
+}
+
+// Collapsed state
+.simple-sidebar-collapsed {
+  width: 80px;
+
+  .sidebar-header {
+    .header-content {
+      align-items: center;
+
+      .brand-section {
+        justify-content: center;
+      }
+
+      .collapse-button {
+        align-self: center;
+      }
+    }
+  }
+
+  .sidebar-navigation {
+    .nav-menu {
+      .nav-item {
+        .nav-button {
+          padding: 0.875rem;
+          justify-content: center;
+
+          .button-content {
+            justify-content: center;
+
+            .icon-container {
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .sidebar-footer {
+    .footer-content {
+      align-items: center;
+
+      .user-profile {
+        display: none;
+      }
+
+      .logout-button {
+        width: auto;
+        padding: 0.875rem;
+        border-radius: 50%;
+        aspect-ratio: 1;
+
+        .button-content {
+          .logout-text {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .simple-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    transform: translateX(-100%);
+    @include smooth-transition(transform);
+
+    &.simple-sidebar-expanded {
+      transform: translateX(0);
+      width: 280px;
+    }
+
+    &.simple-sidebar-collapsed {
+      transform: translateX(-100%);
+    }
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .simple-sidebar {
+    border-right-width: 2px;
+
+    .nav-button.active {
+      border-right-width: 4px;
+    }
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .simple-sidebar {
+    .nav-button:hover,
+    .submenu-button:hover,
+    .nested-button:hover {
+      transform: none;
+    }
+
+    .logout-button:hover {
+      transform: none;
+    }
+
+    .collapse-button:hover {
+      transform: none;
+    }
+  }
+}

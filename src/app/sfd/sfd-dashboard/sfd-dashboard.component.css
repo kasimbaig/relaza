@@ -1,0 +1,217 @@
+/* SFD Dashboard Component - Minimal CSS for Tailwind-based design */
+
+/* --- Header Styles - Matching Maintop Dashboard Exactly --- */
+.command-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background: linear-gradient(135deg, var(--primary-gradient-start) 0%, var(--primary-gradient-end) 100%);
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px var(--shadow-light);
+  border: 1px solid var(--border-light);
+  margin-bottom: 2rem;
+}
+
+.command-title-block {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.command-title-block i {
+  font-size: 1.5rem;
+  color: var(--text-white);
+  text-shadow: 0 2px 4px var(--shadow-dark);
+}
+
+.command-title-block h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--text-white);
+  font-weight: 600;
+  text-shadow: 0 2px 4px var(--shadow-dark);
+}
+
+.command-title-block p {
+  margin: 0;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f8fafc;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* PrimeNG Dialog customizations */
+:host ::ng-deep .p-dialog .p-dialog-content {
+  background-color: #ffffff;
+  color: #1e293b;
+  padding: 1rem;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header {
+  background-color: #f8fafc;
+  color: #1e293b;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 1rem 1.5rem;
+  font-weight: 600;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header .p-dialog-title {
+  font-size: 1.2rem;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-footer {
+  background-color: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  padding: 1rem 1.5rem;
+  text-align: right;
+}
+
+/* Button customizations */
+:host ::ng-deep .p-button {
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+:host ::ng-deep .p-button-primary {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  border: none;
+  color: white;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+:host ::ng-deep .p-button-primary:hover {
+  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+:host ::ng-deep .p-button-secondary {
+  background: transparent;
+  border: 2px solid #3b82f6;
+  color: #3b82f6;
+}
+
+:host ::ng-deep .p-button-secondary:hover {
+  background: #3b82f6;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+/* Chart container customizations */
+canvas {
+  max-width: 100%;
+  height: auto;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+  transition: filter 0.3s ease;
+}
+
+canvas:hover {
+  filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.15));
+}
+
+/* SFD/ILMS Mapping chart specific styles */
+.sfd-mapping-chart-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sfd-mapping-chart-container canvas {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* Enhanced chart card styling */
+.chart-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid rgba(148, 163, 184, 0.1);
+  transition: all 0.3s ease;
+}
+
+.chart-card:hover {
+  background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+  border-color: rgba(148, 163, 184, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Chart legend enhancements */
+.chart-legend {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border: 1px solid rgba(148, 163, 184, 0.1);
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-top: 16px;
+}
+
+/* Loading spinner customizations */
+app-loading-spinner {
+  display: block;
+}
+
+/* Data table customizations */
+app-data-table {
+  display: block;
+  width: 100%;
+}
+
+/* Custom animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .min-h-screen {
+    min-height: auto;
+  }
+  
+  .p-6 {
+    padding: 1rem;
+  }
+  
+  .text-4xl {
+    font-size: 2rem;
+  }
+  
+  .text-2xl {
+    font-size: 1.5rem;
+  }
+}

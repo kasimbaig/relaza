@@ -1,0 +1,242 @@
+<div class="min-h-screen bg-gradient-to-br from-gray-50 to-white p-8 font-sans text-gray-900">
+  
+  <div class="command-header">
+    <div class="command-title-block">
+      <i class="pi pi-chart-pie"></i>
+      <div>
+        <h2>SFD Dashboard</h2>
+        <p>Comprehensive fleet maintenance overview and analytics</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="max-w-full mx-auto mb-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div 
+        *ngFor="let metric of kpiMetrics; let i = index"
+        class="cursor-pointer transition-all duration-300 transform hover:scale-105 hover:shadow-xl">
+        
+        <div *ngIf="i === 0" class="bg-white shadow-md border-2 border-blue-200 p-6 relative overflow-hidden h-40">
+          <div class="absolute inset-y-0 left-0 w-1.5 bg-blue-500"></div>
+          <div class="flex items-center justify-between h-full">
+            <div class="flex-1">
+              <p class="text-sm font-medium text-gray-500">{{ metric.title }}</p>
+              <p class="text-4xl font-extrabold text-gray-900 mt-2">{{ metric.value }}</p>
+              <p class="text-blue-600 text-xs mt-2">{{ metric.description }}</p>
+            </div>
+            <div class="p-3 rounded-full bg-blue-100 text-blue-600 flex-shrink-0">
+              <i [class]="metric.iconClass + ' text-2xl'"></i>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="i === 1" class="bg-white shadow-md border-2 border-red-200 p-6 relative overflow-hidden h-40">
+          <div class="absolute inset-y-0 left-0 w-1.5 bg-red-500"></div>
+          <div class="flex items-center justify-between h-full">
+            <div class="flex-1">
+              <p class="text-sm font-medium text-gray-500">{{ metric.title }}</p>
+              <p class="text-4xl font-extrabold text-gray-900 mt-2">{{ metric.value }}</p>
+              <p class="text-red-600 text-xs mt-2">{{ metric.description }}</p>
+            </div>
+            <div class="p-3 rounded-full bg-red-100 text-red-600 flex-shrink-0">
+              <i [class]="metric.iconClass + ' text-2xl'"></i>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="i === 2" class="bg-white shadow-md border-2 border-green-200 p-6 relative overflow-hidden h-40">
+          <div class="absolute inset-y-0 left-0 w-1.5 bg-green-500"></div>
+          <div class="flex items-center justify-between h-full">
+            <div class="flex-1">
+              <p class="text-sm font-medium text-gray-500">{{ metric.title }}</p>
+              <p class="text-4xl font-extrabold text-gray-900 mt-2">{{ metric.value }}</p>
+              <p class="text-green-600 text-xs mt-2">{{ metric.description }}</p>
+            </div>
+            <div class="p-3 rounded-full bg-green-100 text-green-600 flex-shrink-0">
+              <i [class]="metric.iconClass + ' text-2xl'"></i>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="i === 3" class="bg-white shadow-md border-2 border-purple-200 p-6 relative overflow-hidden h-40">
+          <div class="absolute inset-y-0 left-0 w-1.5 bg-purple-500"></div>
+          <div class="flex items-center justify-between h-full">
+            <div class="flex-1">
+              <p class="text-sm font-medium text-gray-500">{{ metric.title }}</p>
+              <p class="text-4xl font-extrabold text-gray-900 mt-2">{{ metric.value }}</p>
+              <p class="text-purple-600 text-xs mt-2">{{ metric.description }}</p>
+            </div>
+            <div class="p-3 rounded-full bg-purple-100 text-purple-600 flex-shrink-0">
+              <i [class]="metric.iconClass + ' text-2xl'"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-full mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+      
+      <div class="bg-white rounded-xl shadow-md border-2 border-blue-200 p-6">
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">Fleet Composition</h3>
+        <div class="relative h-64">
+          <app-loading-spinner *ngIf="isLoadingCharts" class="absolute inset-0 flex items-center justify-center h-full z-10"></app-loading-spinner>
+          <canvas baseChart *ngIf="fleetCompositionChartData && !isLoadingCharts" 
+                  [data]="fleetCompositionChartData"
+                  [options]="fleetCompositionChartOptions" 
+                  [type]="fleetCompositionChartType"
+                  class="group-hover:scale-105 transition-transform duration-500">
+          </canvas>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-md border-2 border-green-200 p-6">
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">Equipment Distribution</h3>
+        <div class="relative h-64">
+          <app-loading-spinner *ngIf="isLoadingCharts" class="absolute inset-0 flex items-center justify-center h-full z-10"></app-loading-spinner>
+          <canvas baseChart *ngIf="commonEquipmentChartData && !isLoadingCharts" 
+                  [data]="commonEquipmentChartData"
+                  [options]="commonEquipmentChartOptions" 
+                  [type]="commonEquipmentChartType"
+                  class="group-hover:scale-105 transition-transform duration-500">
+          </canvas>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-md border-2 border-red-200 p-6">
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">SFD/ILMS Mapping</h3>
+        <div class="relative h-64 flex items-center justify-center">
+          <app-loading-spinner *ngIf="isLoadingCharts" class="absolute inset-0 flex items-center justify-center h-full z-10"></app-loading-spinner>
+          <div *ngIf="sfdIlmsMappingChartData && !isLoadingCharts" class="relative w-full h-full flex items-center justify-center">
+            <!-- Center Text Overlay -->
+            <div class="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
+              <div class="text-center bg-white/90 backdrop-blur-sm rounded-full p-4 shadow-xl border border-gray-200">
+                <span class="block text-2xl font-extrabold text-gray-900">{{ mappedPercentage | number:'1.0-0' }}%</span>
+                <span class="block text-xs font-semibold text-gray-600">Mapped</span>
+              </div>
+            </div>
+            <!-- Chart Container with proper sizing -->
+            <div class="sfd-mapping-chart-container">
+              <canvas baseChart [data]="sfdIlmsMappingChartData" 
+                      [options]="sfdIlmsMappingChartOptions"
+                      [type]="sfdIlmsMappingChartType"
+                      class="group-hover:scale-105 transition-transform duration-500">
+              </canvas>
+            </div>
+          </div>
+        </div>
+        
+        <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mt-6">
+          <div class="flex items-center gap-2 px-4 py-2 rounded-xl bg-green-50 border border-green-200">
+            <span class="w-3 h-3 rounded-full bg-green-500"></span>
+            <span class="text-sm font-medium text-green-700">Mapped</span>
+          </div>
+          <div class="flex items-center gap-2 px-4 py-2 rounded-xl bg-red-50 border border-red-200">
+            <span class="w-3 h-3 rounded-full bg-red-500"></span>
+            <span class="text-sm font-medium text-red-700">Unmapped</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-full mx-auto mb-8 mt-8">
+    <div class="bg-white rounded-xl shadow-md border-2 border-indigo-200 p-6">
+      <h3 class="text-xl font-semibold text-gray-900 mb-4">SFD Updates Velocity</h3>
+      <p class="text-gray-600 text-sm mb-6">Last 6 months update trends</p>
+      
+      <div class="relative h-80">
+        <app-loading-spinner *ngIf="isLoadingCharts" class="absolute inset-0 flex items-center justify-center h-full z-10"></app-loading-spinner>
+        <canvas baseChart *ngIf="sfdUpdatesChartData && !isLoadingCharts" 
+                [data]="sfdUpdatesChartData"
+                [options]="sfdUpdatesChartOptions" 
+                [type]="sfdUpdatesChartType"
+                class="group-hover:scale-[1.01] transition-transform duration-500">
+        </canvas>
+      </div>
+    </div>
+  </div>
+
+    <div class="max-w-full mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      
+      <div class="bg-white rounded-xl shadow-md border-2 border-yellow-200 p-6">
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">Recent Critical Alerts</h3>
+        
+        <div class="p-6">
+          <app-loading-spinner *ngIf="isLoadingAlerts; else alertsContent" class="flex items-center justify-center h-32"></app-loading-spinner>
+          <ng-template #alertsContent>
+            <div class="space-y-4 max-h-80 overflow-y-auto custom-scrollbar">
+              <div *ngFor="let alert of recentAlerts; let i = index" 
+                   class="flex items-center gap-4 p-4 rounded-xl bg-gray-50 hover:bg-gray-100 border border-gray-200 cursor-pointer transition-all duration-300 hover:shadow-md transform hover:-translate-y-1"
+                   (click)="onAlertClick(alert)">
+                <div class="flex-shrink-0">
+                  <div class="w-10 h-10 rounded-lg flex items-center justify-center"
+                       [ngClass]="{
+                         'bg-yellow-100 text-yellow-600': alert.type === 'Warning',
+                         'bg-red-100 text-red-600': alert.type === 'Critical',
+                         'bg-blue-100 text-blue-600': alert.type === 'Maintenance'
+                       }">
+                    <i class="pi text-base"
+                       [ngClass]="{
+                         'pi-exclamation-triangle': alert.type === 'Warning',
+                         'pi-times-circle': alert.type === 'Critical',
+                         'pi-info-circle': alert.type === 'Maintenance'
+                       }"></i>
+                  </div>
+                </div>
+                <div class="flex-grow min-w-0">
+                  <p class="text-sm font-semibold text-gray-900 truncate">{{ alert.message }}</p>
+                  <p class="text-xs text-gray-500">{{ alert.timestamp | date:'short' }}</p>
+                </div>
+                <div class="flex-shrink-0">
+                  <i class="pi pi-chevron-right text-gray-400"></i>
+                </div>
+              </div>
+              <div *ngIf="recentAlerts.length === 0" class="text-center py-12">
+                <i class="pi pi-check-circle text-5xl text-green-500 mb-4"></i>
+                <p class="text-gray-500 font-semibold">No recent alerts</p>
+                <p class="text-sm text-gray-400">All systems operating normally</p>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-md border-2 border-emerald-200 p-6">
+        <h3 class="text-xl font-semibold text-gray-900 mb-4">Global Fleet Distribution</h3>
+        
+        <div class="p-6">
+          <div class="text-center py-12">
+            <div class="relative inline-block mb-6">
+              <div class="w-24 h-24 rounded-3xl bg-emerald-100 flex items-center justify-center mx-auto shadow-lg">
+                <i class="pi pi-map text-4xl text-emerald-600"></i>
+              </div>
+            </div>
+            <h4 class="text-lg font-bold text-gray-900 mb-2">Interactive Map Coming Soon</h4>
+            <p class="text-sm text-gray-600 mb-6">Real-time fleet positioning and status</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p-dialog header="Common Equipment Details" [(visible)]="showCommonEquipmentDetail" [modal]="true"
+    [style.width]="'90vw'" [closable]="true" styleClass="custom-dialog-enhanced dark:bg-gray-800">
+    <div class="bg-gray-50 dark:bg-gray-900 rounded-lg p-6">
+      <app-loading-spinner *ngIf="isLoadingCommonEquipmentDetails" class="flex items-center justify-center h-32"></app-loading-spinner>
+      <div *ngIf="!isLoadingCommonEquipmentDetails" class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <app-data-table [data]="commonEquipmentDetailData" [columns]="commonEquipmentDetailColumns"
+          emptyMessage="No equipment details found for this selection." class="custom-table dark:text-white"></app-data-table>
+      </div>
+    </div>
+    <ng-template pTemplate="footer">
+      <div class="flex gap-3">
+        <button pButton icon="pi pi-times" label="Close" 
+                class="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white rounded-lg transition-colors duration-300 font-semibold"
+                (click)="showCommonEquipmentDetail = false"></button>
+      </div>
+    </ng-template>
+  </p-dialog>
+</div>

@@ -1,0 +1,67 @@
+/* Custom action button styling */
+.custom-action-btn {
+  background-color: #083464 !important;
+  color: white !important;
+  border: 2px solid #083464 !important;
+  border-radius: 20px !important;
+  padding: 8px 16px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  outline: none !important;
+  min-width: 80px !important;
+}
+
+.custom-action-btn:hover {
+  background-color: #062a4f !important;
+  border-color: #062a4f !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+  transform: translateY(-1px) !important;
+}
+
+.custom-action-btn:focus {
+  background-color: #083464 !important;
+  border-color: #083464 !important;
+  box-shadow: 0 0 0 3px rgba(8, 52, 100, 0.3) !important;
+}
+
+.custom-action-btn:active {
+  background-color: #041f3a !important;
+  border-color: #041f3a !important;
+  transform: translateY(0) !important;
+}
+
+/* Table header styling - same solid color as action buttons */
+:host ::ng-deep .custom_header_class {
+  background-color: #083464 !important;
+  background: #083464 !important;
+  background-image: none !important;
+  background-gradient: none !important;
+  color: white !important;
+  border: none !important;
+  padding: 20px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  vertical-align: middle !important;
+}
+
+/* Override any PrimeNG header styles */
+:host ::ng-deep .p-datatable-thead > tr > th.custom_header_class,
+:host ::ng-deep .p-datatable-thead > tr > th.custom_header_class * {
+  background-color: #083464 !important;
+  background: #083464 !important;
+  background-image: none !important;
+  background-gradient: none !important;
+  color: white !important;
+}
+
+/* Ensure sticky header also has the same color */
+:host ::ng-deep .sticky-header.custom_header_class {
+  background-color: #083464 !important;
+  background: #083464 !important;
+  background-image: none !important;
+  background-gradient: none !important;
+}

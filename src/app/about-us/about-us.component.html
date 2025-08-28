@@ -1,0 +1,64 @@
+<app-shared-layout>
+  <div class="about-content">
+    <div class="organization-chart">
+      <div class="chart-header">
+        <h2>{{ organizationData.title }}</h2>
+        <div class="chart-info">
+          <p>{{ organizationData.established }}</p>
+          <p>{{ organizationData.charter }}</p>
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <!-- Top Level -->
+        <div class="chart-level top-level">
+          <div class="chart-box grey-box">{{ organizationData.topLevel }}</div>
+        </div>
+
+        <!-- Vertical line down -->
+        <div class="vertical-line"></div>
+
+        <!-- Director Level -->
+        <div class="chart-level director-level">
+          <div class="chart-box blue-box">{{ organizationData.director }}</div>
+        </div>
+
+        <!-- T-junction with horizontal line -->
+        <div class="connection-lines">
+          <div class="horizontal-line"></div>
+          <div class="vertical-branch left"></div>
+          <div class="vertical-branch right"></div>
+        </div>
+
+        <!-- Admin Support and OIC Level -->
+        <div class="chart-level admin-level">
+          <div class="admin-support">
+            <div class="chart-box grey-box" *ngFor="let admin of organizationData.adminSupport">
+              {{ admin }}
+            </div>
+          </div>
+          <div class="oic-box">
+            <div class="chart-box grey-box">{{ organizationData.oic }}</div>
+          </div>
+        </div>
+
+        <!-- Vertical line from OIC down -->
+        <div class="vertical-line-center"></div>
+
+        <!-- Functional Areas Level -->
+        <div class="chart-level functional-level">
+          <div class="functional-areas">
+            <div class="functional-area" *ngFor="let area of organizationData.functionalAreas">
+              <div class="chart-box green-box">{{ area.name }}</div>
+              <div class="area-children">
+                <div class="child-item" *ngFor="let child of area.children">
+                  {{ child }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-shared-layout>
