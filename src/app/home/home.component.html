@@ -75,8 +75,15 @@
   <div class="video-gallery-overlay" *ngIf="showVideoGallery" (click)="closeVideoGallery()">
     <div class="video-gallery-dialog" (click)="$event.stopPropagation()">
       <div class="video-gallery-header">
-        <h2>VIDEO GALLERY</h2>
-        <h3>{{ getSelectedCategoryTitle() }}</h3>
+        <div class="header-content">
+          <div class="video-icon">
+            <mat-icon>play_circle</mat-icon>
+          </div>
+          <div class="header-text">
+            <h2>VIDEO GALLERY</h2>
+            <h3>{{ getSelectedCategoryTitle() }}</h3>
+          </div>
+        </div>
         <button class="close-btn" (click)="closeVideoGallery()">
           <mat-icon>close</mat-icon>
         </button>
@@ -88,6 +95,9 @@
           class="video-item"
           (click)="downloadVideo(video.id, video.title)"
         >
+          <div class="video-item-icon">
+            <mat-icon>video_library</mat-icon>
+          </div>
           <h4>{{ video.title }}</h4>
         </div>
       </div>
