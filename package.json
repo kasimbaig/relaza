@@ -41,7 +41,7 @@
     "lucide-angular": "^0.536.0",
     "ng-apexcharts": "1.15.1",
     "ng2-charts": "^4.1.1",
-    "ngx-print": "^20.0.0",
+    "ngx-print": "3.2.0",
     "ngx-ui-loader": "^13.0.0",
     "primeicons": "^7.0.0",
     "primeng": "^19.0.10",
