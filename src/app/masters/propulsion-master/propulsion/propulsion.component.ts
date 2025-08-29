@@ -168,6 +168,7 @@ export class PropulsionComponent implements OnInit {
   }
 
   viewDeptDetails(dept: any) {
+    this.selectedDetails = { ...dept };
     this.viewdisplayModal = true;
   }
   editDetails(details: any, open: boolean) {
