@@ -27,6 +27,7 @@ import { DialogModule } from 'primeng/dialog'; // Import DialogModule for p-dial
 import { PanelModule } from 'primeng/panel'; // Import PanelModule for view details
 import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { FormFieldConfig } from '../../manufacturer-master/manufacturer-master.component';
 
 @Component({
   selector: 'app-equipment',
@@ -44,7 +45,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
     DropdownModule,
     InputNumberModule,
     ReactiveFormsModule,
-    DeleteConfirmationModalComponent
+    DeleteConfirmationModalComponent,
+    AddFormComponent
 ],
   templateUrl: './equipment.component.html',
   styleUrl: './equipment.component.css',
@@ -75,7 +77,7 @@ export class EquipmentComponent implements OnInit {
   // New properties for pagination
   apiUrl: string = 'master/equipment/';
   totalCount: number = 0;
-  toggleTable: boolean = true;  
+
   equipmentForm = new FormGroup({
     section: new FormControl('',[Validators.required]),
     group: new FormControl('',[Validators.required]),
@@ -133,7 +135,10 @@ export class EquipmentComponent implements OnInit {
         this.filteredSection = sections.results|| sections 
         this.filteredTypes = eqType.results || eqType
         this.filteredGroups = groups.results || groups
-        this.filteredCountries = countries.results || countries
+        this.filteredCountries = (countries.results || countries).map((country: any) => ({
+          value: country.id,
+          label: country.name
+        }));
         this.filteredManufacturers = manufacturers.results || manufacturers
         this.filteredSuppliers = suppliers.results || suppliers
         this.isLoading = false;
@@ -317,10 +322,6 @@ export class EquipmentComponent implements OnInit {
           this.toastService.showSuccess('Equipment deleted successfully');
           this.getEquipments(); // Refresh the data
           this.showDeleteDialog = false;
-          this.toggleTable=false
-          setTimeout(() => {
-            this.toggleTable=true
-          }, 100);
         },
         error: (error) => {
           console.error('Error deleting equipment:', error);
@@ -356,10 +357,6 @@ export class EquipmentComponent implements OnInit {
             this.toggleForm(false); // Close the form
             this.equipmentForm.reset(); // Reset form
             this.isLoading = false;
-            this.toggleTable=false
-            setTimeout(() => {
-              this.toggleTable=true
-            }, 100);
               },
           });
       }
@@ -374,10 +371,6 @@ export class EquipmentComponent implements OnInit {
             this.toggleForm(false); // Close the form
             this.equipmentForm.reset(); // Reset form
             this.isLoading = false;
-            this.toggleTable=false
-            setTimeout(() => {
-              this.toggleTable=true
-            }, 100);
           },
           error: (error) => {
             console.error('Error updating equipment:', error);
@@ -477,5 +470,98 @@ export class EquipmentComponent implements OnInit {
     
     // Force change detection
     this.cdr.detectChanges();
+  }
+  newManufacturer: any = {
+    name: '',
+    code: '',
+    country: '',
+    address: '',
+    area: '',
+    city: '',
+    contact_person: '',
+    contact_number: null,
+    email: ''
+  };
+  manufacturerFormConfig = [
+    { label: 'Manufacturer Name', key: 'name', type: 'text', required: true },
+    { label: 'Manufacturer Code', key: 'code', type: 'text', required: true },
+    { label: 'Country', key: 'country', type: 'select', options: [...this.filteredCountries], required: true },
+    { label: 'Address', key: 'address', type: 'text', required: true, fullWidth: true },
+    { label: 'Area Street', key: 'area', type: 'text', required: false },
+    { label: 'City', key: 'city', type: 'text', required: true },
+    { label: 'Contact Person', key: 'contact_person', type: 'text', required: false },
+    { label: 'Contact Number', key: 'contact_number', type: 'number', required: false },
+    { label: 'Email Id', key: 'email', type: 'text', required: true }
+  ];
+
+  isManufacturerFormOpen: boolean = false;
+  addManufacturer(){
+    this.manufacturerFormConfig.forEach((item:any)=>{
+      if(item.key === 'country'){
+        item.options = [...this.filteredCountries];
+      }
+    })
+    setTimeout(()=>{
+      this.isManufacturerFormOpen = true;
+    },500)
+  }
+  handleSubmit(data: any): void {
+    console.log("data", data);
+    this.apiService.post(`master/manufacturers/`, data).subscribe(res=>{
+      this.apiService.get('master/manufacturers/?is_dropdown=true').subscribe((res:any)=>{
+        this.filteredManufacturers = res.data;
+        this.isManufacturerFormOpen = false;
+      })
+    });
+  }
+
+  formConfigForNewDetails = [
+    { label: 'Code', key: 'code', type: 'text', required: true },
+    { label: 'Name', key: 'name', type: 'text', required: true },
+    { label: 'Address', key: 'address', type: 'text', required: true },
+    { label: 'Area Street', key: 'area_street', type: 'text', required: true },
+    { label: 'Country', key: 'country', type: 'select', options: [...this.filteredCountries], required: true },
+    { label: 'City', key: 'city', type: 'text', required: true },
+    { label: 'Manufacture Supplier', key: 'supplier_manufacture', type: 'text', required: true },
+    { label: 'Contact Person', key: 'contact_person', type: 'text', required: true },
+    { label: 'Country Code', key: 'country_code', type: 'text', required: true },
+    { label: 'Contact Number', key: 'contact_number', type: 'number', required: true },
+    { label: 'Email ID', key: 'email_id', type: 'text', required: true },
+  ];
+  newSupplier = {
+    code: '',
+    name: '',
+    address: '',
+    area_street: '',
+    city: '',
+    country: '',
+    supplier_manufacture: '',
+    contact_person: '',
+    country_code: null,
+    contact_number: '',
+    email_id: '',
+    active: 1,
+  };
+  isSupplierFormOpen: boolean = false;
+  addSupplier(){
+  
+    setTimeout(()=>{
+      this.isSupplierFormOpen = true;
+    },500)
+    this.formConfigForNewDetails.forEach((item:any)=>{
+      if(item.key === 'country'){
+        item.options = [...this.filteredCountries];
+      }
+    })
+    
+  }
+
+  handleSupplierSubmit(data: any) {
+   
+    this.apiService.post(`master/supplier/`, data).subscribe(res=>{
+      this.apiService.get<any>('master/supplier/?is_dropdown=true').subscribe(res=>{
+        this.filteredSuppliers = res;
+      })
+    });
   }
 }
