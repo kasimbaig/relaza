@@ -40,8 +40,8 @@ export class MastersComponent implements OnInit, AfterViewInit {
     { label: 'Ship Master', icon: 'fa-solid fa-database', path: '/masters/ship-group/ship-master' },
     { label: 'Ship Category', icon: 'fa-solid fa-tags', path: '/masters/ship-group/ship-category' },
     { label: 'Departments', icon: 'fa-solid fa-building', path: '/masters/ship-group/departments' },
+     { label: 'Section', icon: 'fa-solid fa-sitemap', path: '/masters/ship-group/section' },
     { label: 'Group', icon: 'fa-solid fa-layer-group', path: '/masters/ship-group/group' },
-    { label: 'Section', icon: 'fa-solid fa-sitemap', path: '/masters/ship-group/section' },
     { label: 'Class', icon: 'fa-solid fa-graduation-cap', path: '/masters/ship-group/class' }
   ];
   equipmentDropdownItems: DropdownItem[] = [
