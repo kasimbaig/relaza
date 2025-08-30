@@ -60,7 +60,7 @@ export class EstablishmentComponent implements OnInit {
   isEditFormOpen: boolean = false;
   editTitle: string = 'Edit Establishment Master';
   title: string = 'Add New Establishment';
-  toggleTable: boolean = true;      
+
   newEstablishment: any = {};
   selectedEstablishment: any = {};
   filteredEstablishments: any = [];
@@ -111,10 +111,10 @@ export class EstablishmentComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('🚢 Establishment Component Initializing...');
-    console.log('API URL:', this.apiUrl);
-    console.log('Total Count:', this.totalCount);
-    console.log('Enable URL Fetching: true');
+    //console.log('🚢 Establishment Component Initializing...');
+    //console.log('API URL:', this.apiUrl);
+    //console.log('Total Count:', this.totalCount);
+    //console.log('Enable URL Fetching: true');
     
     // Load master data for dropdowns (but not establishments data - paginated table will handle that)
     this.loadInitialData();
@@ -220,10 +220,6 @@ export class EstablishmentComponent implements OnInit {
         // Refresh the data after successful addition
         this.getEstablishments();
         this.closeDialog();
-        this.toggleTable=false
-        setTimeout(() => {
-          this.toggleTable=true
-        }, 100);
       },
       error: (err) => {
         const errorMsg = err?.error?.error || 'Something went wrong';
@@ -253,7 +249,7 @@ rowdata:any
       command: establishment.command,
       ops_authority: establishment.ops_authority,
     };
-    console.log('Edit Data:', this.selectedEstablishment); // For debugging
+    //console.log('Edit Data:', this.selectedEstablishment); // For debugging
   }
 
   handleEditSubmit(data: any) {
@@ -265,10 +261,6 @@ rowdata:any
         // Refresh the data after successful edit
         this.getEstablishments();
         this.closeDialog();
-        this.toggleTable=false
-        setTimeout(() => {
-          this.toggleTable=true
-        }, 100);
       },
       error: (err) => {
         const errorMsg = err?.error?.error || 'Error updating establishment';
@@ -291,11 +283,7 @@ rowdata:any
           // Refresh the data after successful deletion
           this.getEstablishments();
           this.showDeleteDialog = false;
-          this.toggleTable=false
-          setTimeout(() => {
-            this.toggleTable=true
-          }, 100);
-            },
+        },
         error: (error) => {
           console.error('Error:', error);
           this.toastService.showError('Error deleting establishment');
@@ -330,16 +318,16 @@ rowdata:any
 
   // Handle data loaded from paginated table
   onDataLoaded(data: any[]): void {
-    console.log('🚢 Data loaded from paginated table:', data);
-    console.log('🚢 Data length:', data?.length);
-    console.log('🚢 Data type:', typeof data);
-    console.log('🚢 First record:', data?.[0]);
+    //console.log('🚢 Data loaded from paginated table:', data);
+    //console.log('🚢 Data length:', data?.length);
+    //console.log('🚢 Data type:', typeof data);
+    //console.log('🚢 First record:', data?.[0]);
     
     this.establishments = data || [];
     this.filteredEstablishments = [...(data || [])];
     
-    console.log('🚢 Establishments array updated:', this.establishments);
-    console.log('🚢 Filtered establishments updated:', this.filteredEstablishments);
+    //console.log('🚢 Establishments array updated:', this.establishments);
+    //console.log('🚢 Filtered establishments updated:', this.filteredEstablishments);
     
     // Force change detection
     this.cdr.detectChanges();

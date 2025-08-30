@@ -87,10 +87,10 @@ export class PropulsionComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('🚢 Propulsion Component Initializing...');
-    console.log('API URL:', this.apiUrl);
-    console.log('Total Count:', this.totalCount);
-    console.log('Enable URL Fetching: true');
+    //console.log('🚢 Propulsion Component Initializing...');
+    //console.log('API URL:', this.apiUrl);
+    //console.log('Total Count:', this.totalCount);
+    //console.log('Enable URL Fetching: true');
     
     // Note: Table data will be loaded by the paginated table component
     // No need to call getDepartments() here
@@ -103,7 +103,7 @@ export class PropulsionComponent implements OnInit {
   //     .get<any>('master/propulsion/') // Changed to handle paginated response
   //     .subscribe({
   //       next: (response) => {
-  //         console.log(response);
+  //         //console.log(response);
   //         // Handle paginated response structure
   //         if (response && response.results) {
   //           this.departments = response.results;
@@ -151,7 +151,7 @@ export class PropulsionComponent implements OnInit {
 
     this.apiService.post(`master/propulsion/`, this.newDetails).subscribe({
       next: (data: any) => {
-        console.log(data);
+        //console.log(data);
         this.toastService.showSuccess('Propulsion added successfully');
         // Refresh the data after successful addition
         this.toggleTable = false;
@@ -168,7 +168,6 @@ export class PropulsionComponent implements OnInit {
   }
 
   viewDeptDetails(dept: any) {
-    this.selectedDetails = { ...dept };
     this.viewdisplayModal = true;
   }
   editDetails(details: any, open: boolean) {
@@ -185,7 +184,7 @@ export class PropulsionComponent implements OnInit {
       .delete(`master/propulsion/${this.selectedDetails.id}/`)
       .subscribe({
         next: (data: any) => {
-          console.log(data);
+          //console.log(data);
           this.toastService.showSuccess('Propulsion deleted successfully');
           // Refresh the data after successful deletion
           this.toggleTable = false;
@@ -210,7 +209,7 @@ export class PropulsionComponent implements OnInit {
       .put(`master/propulsion/${this.selectedDetails.id}/`, this.selectedDetails)
       .subscribe({
         next: (data: any) => {
-          console.log(data);
+          //console.log(data);
           this.toastService.showSuccess('Updated Propulsion successfully');
           // Refresh the data after successful edit
           this.toggleTable = false;
@@ -252,7 +251,7 @@ export class PropulsionComponent implements OnInit {
   @Output() exportCSVEvent = new EventEmitter<void>();
   @Output() exportPDFEvent = new EventEmitter<void>();
   exportPDF() {
-    console.log('Exporting as PDF...');
+    //console.log('Exporting as PDF...');
     // Your PDF export logic here
     this.exportPDFEvent.emit(); // Emit event instead of direct call
     const doc = new jsPDF();
@@ -266,7 +265,7 @@ export class PropulsionComponent implements OnInit {
   }
   @Input() tableName: string = '';
   exportExcel() {
-    console.log('Exporting as Excel...');
+    //console.log('Exporting as Excel...');
     // Your Excel export logic here
     this.exportCSVEvent.emit(); // Emit event instead of direct call
     const headers = this.cols.map((col) => col.header);
@@ -288,16 +287,16 @@ export class PropulsionComponent implements OnInit {
 
   // Handle data loaded from paginated table
   onDataLoaded(data: any[]): void {
-    console.log('🚢 Data loaded from paginated table:', data);
-    console.log('🚢 Data length:', data?.length);
-    console.log('🚢 Data type:', typeof data);
-    console.log('🚢 First record:', data?.[0]);
+    //console.log('🚢 Data loaded from paginated table:', data);
+    //console.log('🚢 Data length:', data?.length);
+    //console.log('🚢 Data type:', typeof data);
+    //console.log('🚢 First record:', data?.[0]);
     
     this.departments = data || [];
     this.filteredDepartments = [...(data || [])];
     
-    console.log('🚢 Departments array updated:', this.departments);
-    console.log('🚢 Filtered departments updated:', this.filteredDepartments);
+    //console.log('🚢 Departments array updated:', this.departments);
+    //console.log('🚢 Filtered departments updated:', this.filteredDepartments);
     
     // Force change detection
     this.cdr.detectChanges();

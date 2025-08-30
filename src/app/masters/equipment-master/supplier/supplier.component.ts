@@ -76,7 +76,7 @@ export class SupplierComponent implements OnInit {
   }
 
   handleBulkUpload(event: any) {
-    console.log('Uploaded suppliers file:', event.files);
+    //console.log('Uploaded suppliers file:', event.files);
     // Add API integration logic here
   }
   newSupplier = {
@@ -179,10 +179,10 @@ export class SupplierComponent implements OnInit {
   constructor(private apiService: ApiService, private location: Location, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    console.log('🚢 Supplier Component Initializing...');
-    console.log('API URL:', this.apiUrl);
-    console.log('Total Count:', this.totalCount);
-    console.log('Enable URL Fetching: true');
+    //console.log('🚢 Supplier Component Initializing...');
+    //console.log('API URL:', this.apiUrl);
+    //console.log('Total Count:', this.totalCount);
+    //console.log('Enable URL Fetching: true');
     
     // Load master data for dropdowns (but not suppliers data - paginated table will handle that)
     this.fetchInitialData();
@@ -199,7 +199,7 @@ export class SupplierComponent implements OnInit {
       countries: this.apiService.get<{count: number, next: string | null, previous: string | null, results: any[]} >('master/country/'),
     }).subscribe({
       next: ({ suppliers, countries }) => {
-        console.log(suppliers);
+        //console.log(suppliers);
         // Handle suppliers
         this.supplier = suppliers.results;
         this.filteredsupplier = [...this.supplier];
@@ -255,7 +255,7 @@ export class SupplierComponent implements OnInit {
     this.newSupplier = data;
     this.apiService.post(`master/supplier/`, this.newSupplier).subscribe({
       next: (data: any) => {
-        console.log(data);
+        //console.log(data);
         // Refresh the data after successful addition
         this.fetchInitialData();
         this.closeDialog();
@@ -283,7 +283,7 @@ export class SupplierComponent implements OnInit {
       .delete(`master/supplier/${this.selectedDetails.id}/`)
       .subscribe({
         next: (data: any) => {
-          console.log(data);
+          //console.log(data);
           // Refresh the data after successful deletion
           this.fetchInitialData();
           this.showDeleteDialog = false;
@@ -302,7 +302,7 @@ export class SupplierComponent implements OnInit {
       .put(`master/supplier/${this.selectedDetails.id}/`, this.selectedDetails)
       .subscribe({
         next: (data: any) => {
-          console.log(data);
+          //console.log(data);
           // Refresh the data after successful edit
           this.fetchInitialData();
           this.closeDialog();
@@ -348,7 +348,7 @@ export class SupplierComponent implements OnInit {
   @Output() exportCSVEvent = new EventEmitter<void>();
   @Output() exportPDFEvent = new EventEmitter<void>();
   exportPDF() {
-    console.log('Exporting as PDF...');
+    //console.log('Exporting as PDF...');
     // Your PDF export logic here
     this.exportPDFEvent.emit(); // Emit event instead of direct call
     const doc = new jsPDF();
@@ -362,7 +362,7 @@ export class SupplierComponent implements OnInit {
   }
   @Input() tableName: string = '';
   exportExcel() {
-    console.log('Exporting as Excel...');
+    //console.log('Exporting as Excel...');
     // Your Excel export logic here
     this.exportCSVEvent.emit(); // Emit event instead of direct call
     const headers = this.cols.map((col) => col.header);
@@ -384,16 +384,16 @@ export class SupplierComponent implements OnInit {
 
   // Handle data loaded from paginated table
   onDataLoaded(data: any[]): void {
-    console.log('🚢 Data loaded from paginated table:', data);
-    console.log('🚢 Data length:', data?.length);
-    console.log('🚢 Data type:', typeof data);
-    console.log('🚢 First record:', data?.[0]);
+    //console.log('🚢 Data loaded from paginated table:', data);
+    //console.log('🚢 Data length:', data?.length);
+    //console.log('🚢 Data type:', typeof data);
+    //console.log('🚢 First record:', data?.[0]);
     
     this.supplier = data || [];
     this.filteredsupplier = [...(data || [])];
     
-    console.log('🚢 Supplier array updated:', this.supplier);
-    console.log('🚢 Filtered suppliers updated:', this.filteredsupplier);
+    //console.log('🚢 Supplier array updated:', this.supplier);
+    //console.log('🚢 Filtered suppliers updated:', this.filteredsupplier);
     
     // Force change detection
     this.cdr.detectChanges();

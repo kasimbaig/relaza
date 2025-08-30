@@ -93,10 +93,10 @@ export class ClassComponent implements OnInit {
   constructor(private apiService: ApiService, private location:Location, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    console.log('🚢 Class Component Initializing...');
-    console.log('API URL:', this.apiUrl);
-    console.log('Total Count:', this.totalCount);
-    console.log('Enable URL Fetching: true');
+    //console.log('🚢 Class Component Initializing...');
+    //console.log('API URL:', this.apiUrl);
+    //console.log('Total Count:', this.totalCount);
+    //console.log('Enable URL Fetching: true');
     
     // Note: Table data will be loaded by the paginated table component
     // No need to call getDepartments() here
@@ -108,16 +108,16 @@ export class ClassComponent implements OnInit {
 
   // Handle data loaded from paginated table
   onDataLoaded(data: any[]): void {
-    console.log('🚢 Data loaded from paginated table:', data);
-    console.log('🚢 Data length:', data?.length);
-    console.log('🚢 Data type:', typeof data);
-    console.log('🚢 First record:', data?.[0]);
+    //console.log('🚢 Data loaded from paginated table:', data);
+    //console.log('🚢 Data length:', data?.length);
+    //console.log('🚢 Data type:', typeof data);
+    //console.log('🚢 First record:', data?.[0]);
     
     this.departments = data || [];
     this.filteredDepartments = [...(data || [])];
     
-    console.log('🚢 Departments array updated:', this.departments);
-    console.log('🚢 Filtered departments updated:', this.filteredDepartments);
+    //console.log('🚢 Departments array updated:', this.departments);
+    //console.log('🚢 Filtered departments updated:', this.filteredDepartments);
     
     // Force change detection
     this.cdr.detectChanges();
@@ -164,10 +164,10 @@ export class ClassComponent implements OnInit {
   }
   handleSubmit(data: any) {
     this.newDepartment = data;
-    console.log('New Department:', this.newDepartment);
+    //console.log('New Department:', this.newDepartment);
     this.apiService.post(`master/class/`, this.newDepartment).subscribe({
       next: (data: any) => {
-        console.log(data);
+        //console.log(data);
         this.toggleTable = false;
         setTimeout(() => {
           this.toggleTable = true;
@@ -182,7 +182,7 @@ export class ClassComponent implements OnInit {
   }
   viewDeptDetails(dept: any) {
     this.viewdisplayModal = true;
-    console.log(dept);
+    //console.log(dept);
     this.selectedDept = dept;
   }
   editDetails(details: any, open: boolean) {
@@ -196,7 +196,7 @@ export class ClassComponent implements OnInit {
   confirmDeletion() {
     this.apiService.delete(`master/class/${this.selectedDept.id}/`).subscribe({
       next: (data: any) => {
-        console.log(data);
+        //console.log(data);
         this.toggleTable = false;
         setTimeout(() => {
           this.toggleTable = true;
@@ -214,7 +214,7 @@ export class ClassComponent implements OnInit {
       .put(`master/class/${this.selectedDept.id}/`, this.selectedDept)
       .subscribe({
         next: (data: any) => {
-          console.log(data);
+          //console.log(data);
           this.toggleTable = false;
           setTimeout(() => {
             this.toggleTable = true;
@@ -224,7 +224,7 @@ export class ClassComponent implements OnInit {
           console.error('Error:', error);
         },
       });
-    console.log(this.selectedDept);
+    //console.log(this.selectedDept);
     this.closeDialog();
   }
   cols = [
@@ -254,7 +254,7 @@ export class ClassComponent implements OnInit {
   @Output() exportCSVEvent = new EventEmitter<void>();
   @Output() exportPDFEvent = new EventEmitter<void>();
   exportPDF() {
-    console.log('Exporting as PDF...');
+    //console.log('Exporting as PDF...');
     // Your PDF export logic here
     this.exportPDFEvent.emit(); // Emit event instead of direct call
     const doc = new jsPDF();
@@ -268,7 +268,7 @@ export class ClassComponent implements OnInit {
   }
   @Input() tableName: string = '';
   exportExcel() {
-    console.log('Exporting as Excel...');
+    //console.log('Exporting as Excel...');
     // Your Excel export logic here
     this.exportCSVEvent.emit(); // Emit event instead of direct call
     const headers = this.cols.map((col) => col.header);

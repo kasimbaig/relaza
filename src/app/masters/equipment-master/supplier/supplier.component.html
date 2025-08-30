@@ -43,7 +43,8 @@
     (viewEvent)="viewDetails($event)"
     (editEvent)="editDetails($event, true)" 
     (deleteEvent)="deleteDetails($event)"
-     >
+    (dataLoaded)="onDataLoaded($event)"
+      >
   </app-paginated-table>
  
 
