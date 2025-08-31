@@ -106,16 +106,23 @@ export class EquipmentComponent implements OnInit {
     this.isEdit = 'Add';
     this.equipmentForm.reset();
     this.equipmentForm.enable();
+    
+    // Reset selected details when opening for new equipment
+    if (open) {
+      this.selectedDetails = {};
+    }
+  }
+
+  closeForm() {
+    this.isFormOpen = false;
+    this.isEdit = 'Add';
+    this.equipmentForm.reset();
+    this.selectedDetails = {};
   }
 
   constructor(private apiService: ApiService, private location: Location, private toastService: ToastService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    //console.log('🚢 Equipment Component Initializing...');
-    //console.log('API URL:', this.apiUrl);
-    //console.log('Total Count:', this.totalCount);
-    //console.log('Enable URL Fetching: true');
-    
     this.fetchInitialDropdownData();
     // Note: Table data will be loaded by the paginated table component
     // No need to call getEquipments() here
@@ -224,7 +231,6 @@ export class EquipmentComponent implements OnInit {
   @Output() exportCSVEvent = new EventEmitter<void>();
   @Output() exportPDFEvent = new EventEmitter<void>();
   exportPDF() {
-    //console.log('Exporting as PDF...');
     this.exportPDFEvent.emit();
     const doc = new jsPDF();
     autoTable(doc, {
@@ -237,7 +243,6 @@ export class EquipmentComponent implements OnInit {
   }
   @Input() tableName: string = '';
   exportExcel() {
-    //console.log('Exporting as Excel...');
     this.exportCSVEvent.emit();
     const headers = this.cols.map((col) => col.header);
     const rows = this.departments.map((row: { [x: string]: any }) =>
@@ -286,30 +291,51 @@ export class EquipmentComponent implements OnInit {
   
   edit(event: any){
     this.isEdit = 'Edit';
-    //console.log(event);
     this.selectedDetails = { ...event };
     this.isFormOpen = true;
-    this.apiService.get<any>('master/group/?is_dropdown=true&section='+event.group.section).subscribe((res:any)=>{
-      this.filteredGroups = res
-    })
-    this.equipmentForm.patchValue(event)
-    // Populate form with selected data
-    this.equipmentForm.patchValue({
-      section: event.group.section,
-      group: event.group.id,
-      generic_code: event.generic_code,
-      type: event.type_id || event.type,
-      code: event.code || event.code,
-      name: event.name,
-      model: event.model,
-      maintop_number: event.maintop_number,
-      acquaint_issued: event.acquaint_issued,
-      authority: event.authority,
-      ilms_equipment_code: event.ilms_equipment_code,
-      obsolete: event.obsolete === 'Yes' || event.obsolete === true,
-      total_fits: event.total_fits,
-      ship_applicable: event.ship_applicable
-    });
+    
+    // Fetch groups for the selected section
+    if (event.group?.section) {
+      this.apiService.get<any>('master/group/?is_dropdown=true&section='+event.group.section).subscribe((res:any)=>{
+        this.filteredGroups = res;
+      });
+    }
+    
+    // Populate form with selected data - complete mapping
+    const formData = {
+      section: event.group?.section,
+      group: event.group?.id,
+      generic_code: event.generic_code || '',
+      type: event.type?.id || event.type_id || event.type || '',
+      code: event.code || '',
+      name: event.name || '',
+      model: event.model || '',
+      maintop_number: event.maintop_number || '',
+      acquaint_issued: event.acquaint_issued || '',
+      authority: event.authority || '',
+      ilms_equipment_code: event.ilms_equipment_code || '',
+      obsolete: event.obsolete === 'Yes' || event.obsolete === true || false,
+      total_fits: event.total_fits || '',
+      ship_applicable: event.ship_applicable || '',
+      manufacturer: event.manufacturer?.id || event.manufacturer_id || event.manufacturer || '',
+      country: event.country?.id || event.country_id || event.country || '',
+      supplier: event.supplier?.id || event.supplier_id || event.supplier || ''
+    };
+    
+    // First reset the form to clear any previous values
+    this.equipmentForm.reset();
+    
+    // Use setTimeout to ensure form is properly initialized before patching values
+    setTimeout(() => {
+      // Then patch the new values
+      this.equipmentForm.patchValue(formData);
+      
+      // Enable the form for editing
+      this.equipmentForm.enable();
+      
+      // Force change detection to ensure form updates
+      this.cdr.detectChanges();
+    }, 100);
   }
   
   showDeleteDialog: boolean = false;
@@ -322,13 +348,12 @@ export class EquipmentComponent implements OnInit {
   confirmDeletion() {
     this.apiService
       .delete(`master/equipment/${this.selectedDetails.id}/`)
-      .subscribe({
-        next: (data: any) => {
-          //console.log('Equipment deleted successfully:', data);
-          this.toastService.showSuccess('Equipment deleted successfully');
-          this.getEquipments(); // Refresh the data
-          this.showDeleteDialog = false;
-        },
+              .subscribe({
+          next: (data: any) => {
+            this.toastService.showSuccess('Equipment deleted successfully');
+            this.getEquipments(); // Refresh the data
+            this.showDeleteDialog = false;
+          },
         error: (error) => {
           console.error('Error deleting equipment:', error);
           this.toastService.showError('Error deleting equipment');
@@ -340,7 +365,6 @@ export class EquipmentComponent implements OnInit {
     this.showDeleteDialog = false;
   }
   submit(){
-    //console.log(this.equipmentForm.value);
     if (this.equipmentForm.valid) {
       this.isLoading = true;
       this.equipmentForm.get('active')?.setValue("1");
@@ -357,11 +381,9 @@ export class EquipmentComponent implements OnInit {
         .post('master/equipment/', apiPayload)
         .subscribe({
           next: (data: any) => {
-            //console.log('Equipment added successfully:', data);
             this.toastService.showSuccess('Equipment added successfully');
             this.getEquipments(); // Refresh the data
-            this.toggleForm(false); // Close the form
-            this.equipmentForm.reset(); // Reset form
+            this.closeForm(); // Close the form
             this.isLoading = false;
               },
           });
@@ -374,8 +396,7 @@ export class EquipmentComponent implements OnInit {
             //console.log('Equipment updated successfully:', data);
             this.toastService.showSuccess('Equipment updated successfully');
             this.getEquipments(); // Refresh the data
-            this.toggleForm(false); // Close the form
-            this.equipmentForm.reset(); // Reset form
+            this.closeForm(); // Close the form
             this.isLoading = false;
           },
           error: (error) => {
