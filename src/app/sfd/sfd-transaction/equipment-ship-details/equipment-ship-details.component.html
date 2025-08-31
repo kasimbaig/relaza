@@ -19,7 +19,7 @@
                     [filter]="true"
                     filterBy="name"
                     (onChange)="onSectionChange()"
-                    styleClass="max-w-48">
+                    styleClass="flex-1">
                 </p-dropdown>
             </div>
 
@@ -35,7 +35,7 @@
                     filterBy="name"
                     [disabled]="!selectedSection"
                     (onChange)="onGroupChange()"
-                    styleClass="max-w-48">
+                    styleClass="max-w-70 w-full">
                 </p-dropdown>
             </div>
 
@@ -50,7 +50,7 @@
                     [filter]="true"
                     filterBy="name"
                     (onChange)="onCountryChange()"
-                    styleClass="max-w-48">
+                    styleClass="flex-1">
                 </p-dropdown>
             </div>
             <div class="flex items-center gap-4">
@@ -64,7 +64,7 @@
                     filterBy="name"
                     [disabled]="!selectedCountry"
                     (onChange)="onSupplierChange()"
-                    styleClass="max-w-48">
+                    styleClass="flex-1">
                 </p-dropdown>
             </div>
                          <!-- <div class="flex items-center gap-4">
@@ -91,7 +91,7 @@
                     filterBy="name"
                                          [disabled]="!selectedSection || !selectedGroup || !selectedCountry || !selectedSupplier"
                     (onChange)="onEquipmentChange()"
-                    styleClass="max-w-48">
+                    styleClass="flex-1">
                 </p-dropdown>
             </div>
         <!-- </div>
