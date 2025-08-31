@@ -41,7 +41,6 @@
       (viewEvent)="view($event)"
       (editEvent)="edit($event)" 
       (deleteEvent)="deleteRow($event)"
-      (dataLoaded)="onDataLoaded($event)"
        >
     </app-paginated-table>
 </div>
@@ -57,6 +56,16 @@
   (onConfirm)="confirmDeletion()"
   (onCancel)="cancelDeletion()">
 </app-delete-confirmation-modal>
+
+<!-- View Details Component -->
+<app-view-details
+  *ngIf="viewdisplayModal"
+  [open]="viewdisplayModal"
+  [viewDetails]="selectedDetails"
+  [headers]="equipmentViewConfig"
+  (onOpenChange)="viewdisplayModal = $event"
+  [title]="'View Equipment Details'"
+></app-view-details>
 
 <!-- 
 <app-add-form *ngIf="isFormOpen" [open]="isFormOpen" [formConfig]="formConfigForNewDetails" [formData]="newDetails"  

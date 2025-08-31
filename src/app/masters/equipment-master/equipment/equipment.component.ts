@@ -23,6 +23,7 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
 import { PaginatedTableComponent } from '../../../shared/components/paginated-table/paginated-table.component';
 import { ToastComponent } from '../../../shared/components/toast/toast.component';
 import { DeleteConfirmationModalComponent } from '../../../shared/components/delete-confirmation-modal/delete-confirmation-modal.component';
+import { ViewDetailsComponent } from '../../../shared/components/view-details/view-details.component';
 import { DialogModule } from 'primeng/dialog'; // Import DialogModule for p-dialog
 import { PanelModule } from 'primeng/panel'; // Import PanelModule for view details
 import { DropdownModule } from 'primeng/dropdown';
@@ -46,6 +47,7 @@ import { FormFieldConfig } from '../../manufacturer-master/manufacturer-master.c
     InputNumberModule,
     ReactiveFormsModule,
     DeleteConfirmationModalComponent,
+    ViewDetailsComponent,
     AddFormComponent
 ],
   templateUrl: './equipment.component.html',
@@ -255,27 +257,31 @@ export class EquipmentComponent implements OnInit {
   }
 
   view(event: any){
-    this.isEdit = 'View';
-    //console.log(event);
-    this.selectedDetails = event;
-    this.isFormOpen = true;
-    this.equipmentForm.patchValue({
-      section: event.section || 10,
-      group: event.group || 14,
-      generic_code: event.generic_code,
-      type: event.type_id || event.type,
-      code: event.code || event.code,
-      name: event.name,
-      model: event.model,
-      maintop_number: event.maintop_number,
-      acquaint_issued: event.acquaint_issued,
-      authority: event.authority,
-      ilms_equipment_code: event.ilms_equipment_code,
-      obsolete: event.obsolete === 'Yes' || event.obsolete === true,
-      total_fits: event.total_fits,
-      ship_applicable: event.ship_applicable
-    });
-    this.equipmentForm.disable();
+    this.selectedDetails = this.formatEquipmentDataForView(event);
+    this.viewdisplayModal = true;
+  }
+
+  // Method to format equipment data for view details
+  formatEquipmentDataForView(equipment: any): any {
+    return {
+      code: equipment.code || 'N/A',
+      name: equipment.name || 'N/A',
+      manufacturer: equipment.manufacturer?.name || equipment.manufacturer_name || 'N/A',
+      supplier: equipment.supplier?.name || equipment.supplier_name || 'N/A',
+      section: equipment.group?.section_name || equipment.section || 'N/A',
+      group: equipment.group?.name || equipment.group || 'N/A',
+      generic_code: equipment.generic_code || 'N/A',
+      type: equipment.type?.name || equipment.type || 'N/A',
+      model: equipment.model || 'N/A',
+      maintop_number: equipment.maintop_number || 'N/A',
+      acquaint_issued: equipment.acquaint_issued || 'N/A',
+      authority: equipment.authority || 'N/A',
+      ilms_equipment_code: equipment.ilms_equipment_code || 'N/A',
+      obsolete: equipment.obsolete === 'Yes' || equipment.obsolete === true ? 'Yes' : 'No',
+      total_fits: equipment.total_fits || 'N/A',
+      ship_applicable: equipment.ship_applicable || 'N/A',
+      country: equipment.country?.name || equipment.country_name || 'N/A',
+    };
   }
   
   edit(event: any){
@@ -527,6 +533,27 @@ export class EquipmentComponent implements OnInit {
     { label: 'Country Code', key: 'country_code', type: 'text', required: true },
     { label: 'Contact Number', key: 'contact_number', type: 'number', required: true },
     { label: 'Email ID', key: 'email_id', type: 'text', required: true },
+  ];
+
+  // Form configuration for viewing equipment details
+  equipmentViewConfig = [
+    { label: 'Equipment Code', key: 'code', type: 'text' },
+    { label: 'Equipment Name', key: 'name', type: 'text' },
+    { label: 'Section', key: 'section', type: 'text' },
+    { label: 'Group', key: 'group', type: 'text' },
+    { label: 'Generic Code', key: 'generic_code', type: 'text' },
+    { label: 'Type', key: 'type', type: 'text' },
+    { label: 'Model', key: 'model', type: 'text' },
+    { label: 'Maintop Number', key: 'maintop_number', type: 'text' },
+    { label: 'Acquaint Issued', key: 'acquaint_issued', type: 'text' },
+    { label: 'Authority', key: 'authority', type: 'text' },
+    { label: 'ILMS Equipment Code', key: 'ilms_equipment_code', type: 'text' },
+    { label: 'Obsolete', key: 'obsolete', type: 'text' },
+    { label: 'Total Fits', key: 'total_fits', type: 'text' },
+    { label: 'Ship Applicable', key: 'ship_applicable', type: 'text' },
+    { label: 'Manufacturer', key: 'manufacturer', type: 'text' },
+    { label: 'Country', key: 'country', type: 'text' },
+    { label: 'Supplier', key: 'supplier', type: 'text' }
   ];
   newSupplier = {
     code: '',
