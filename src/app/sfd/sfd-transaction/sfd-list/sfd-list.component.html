@@ -121,17 +121,14 @@
                 <!-- Second Row: Equipment Code Name -->
                 <div class="grid grid-cols-6 gap-4 items-center">
                     <label class="text-sm font-medium  col-span-2">Equipment Code Name</label>
-                    <p-dropdown 
-                        [options]="equipmentOptions" 
+                    <select 
                         formControlName="equipment"
-                        placeholder="SELECT EQUIPMENT CODE NAME"
-                        optionLabel="name"
-                        optionValue="id"
-                        (onChange)="onEquipmentChange($event.value)"
-                        [filter]="true"
-                        filterBy="name"
-                        styleClass="w-full col-span-4 placeholder-gray-300">
-                    </p-dropdown>
+                        #equipmentSelect
+                        (change)="onEquipmentChange(equipmentSelect.value)"
+                        class="w-full p-2 border-2 border-gray-500 rounded-sm bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 col-span-4 placeholder-gray-300">
+                        <option value="">SELECT EQUIPMENT CODE NAME</option>
+                        <option *ngFor="let equipment of equipmentOptions" [value]="equipment.id">{{ equipment.name }}</option>
+                    </select>
                 </div>
 
               
@@ -275,7 +272,7 @@
                     <p-dropdown 
                         [options]="departmentOptions" 
                         formControlName="department"
-                        placeholder="HULL"
+                        placeholder="Select Department"
                         optionLabel="name"
                         optionValue="id"
                         [filter]="true"

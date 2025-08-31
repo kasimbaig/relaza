@@ -68,7 +68,7 @@ export class SfdListComponent implements OnInit {
     removal_date: new FormControl(''),
     service_life: new FormControl(''),
     no_of_fits: new FormControl(''),
-    department: new FormControl({value:'',disabled:true}),
+    department: new FormControl(''),
     parent_equipment: new FormControl(''),
     sub_department: new FormControl(''),
     installation_remarks: new FormControl(''),
@@ -116,7 +116,7 @@ export class SfdListComponent implements OnInit {
   ngOnInit(): void {
     this.apiCall();
     // Don't load all data initially - wait for filters
-    console.log('SFD Component initialized - waiting for filter selection');
+    //console.log('SFD Component initialized - waiting for filter selection');
   }
   
   currentPageApi(page: number, pageSize: number){
@@ -142,9 +142,7 @@ export class SfdListComponent implements OnInit {
     this.apiService.get('master/locations/?is_dropdown=true').subscribe((res: any) => {
       this.locationOnBoardOptions = res.data || res;
     });
-    this.apiService.get('master/equipment/?is_dropdown=true').subscribe((res: any) => {
-      this.equipmentOptions = res.results || res;
-    });
+    // Equipment will be loaded when ship is selected - removed from here
     
     this.apiService.get('master/sub-department/?is_dropdown=true').subscribe((res: any) => {
       this.subDepartmentOptions = res.results || res;
@@ -158,9 +156,21 @@ export class SfdListComponent implements OnInit {
     this.displayDialog = true;
     this.isEdit=false;
     this.sfdReferenceForm.reset();
-    this.sfdReferenceForm.patchValue({
-      included_in_dl: true
-    });
+    
+    // Auto-fill the ship field with the currently selected ship from the outside filters
+    if (this.selectedShip) {
+      this.sfdReferenceForm.patchValue({
+        ship: this.selectedShip.id,
+        included_in_dl: true
+      });
+      
+      // Load equipment options for the selected ship
+      this.loadEquipmentOptions(this.selectedShip.id);
+    } else {
+      this.sfdReferenceForm.patchValue({
+        included_in_dl: true
+      });
+    }
     
   }
 
@@ -175,7 +185,7 @@ export class SfdListComponent implements OnInit {
 
   saveReference(): void {
     this.sfdReferenceForm.enable()
-    console.log('Form values:', this.sfdReferenceForm.value);
+    //console.log('Form values:', this.sfdReferenceForm.value);
     
     // Prepare the payload with proper data transformation
     const payload = {
@@ -195,13 +205,13 @@ export class SfdListComponent implements OnInit {
       no_of_fits: this.sfdReferenceForm.value.no_of_fits || null,
     };
 
-    console.log('Form values:', this.sfdReferenceForm.value);
-    console.log('Sending payload:', payload);
+    //console.log('Form values:', this.sfdReferenceForm.value);
+    //console.log('Sending payload:', payload);
 
     if(this.isEdit){
       this.apiService.put(`sfd/sfd-details/${this.sfdReferenceForm.value.id}/`, payload).subscribe((res: any) => {
         // this.toast.add({severity:'success', summary: 'Success', detail: 'SFD Updated Successfully'});
-        console.log(res);
+        //console.log(res);
         this.isEdit=false;
         // Refresh filtered data instead of all data
         if (this.selectedUnit && this.selectedShip) {
@@ -214,7 +224,7 @@ export class SfdListComponent implements OnInit {
     }else{
       this.apiService.post('sfd/sfd-details/', payload).subscribe((res: any) => {
         // this.toast.add({severity:'success', summary: 'Success', detail: 'SFD Added Successfully'});
-        console.log(res);
+        //console.log(res);
         // Refresh filtered data instead of all data
         if (this.selectedUnit && this.selectedShip) {
           this.loadTableData(this.selectedUnit.id, this.selectedShip.id, this.selectedDepartment?.id);
@@ -230,7 +240,7 @@ export class SfdListComponent implements OnInit {
 
   // Event Handlers
   onView(event : any) {
-    console.log('View SFD:', event);
+    //console.log('View SFD:', event);
     
     // Transform the data to match the viewFormConfig field names
     const transformedData = {
@@ -265,7 +275,7 @@ export class SfdListComponent implements OnInit {
   }
 isEdit: boolean = false;
   onEdit(data: any): void {
-    console.log('Edit SFD:', data);
+    //console.log('Edit SFD:', data);
     this.isEdit = true;
     // Create a copy of data with properly formatted dates
     const formData = {
@@ -287,7 +297,7 @@ isEdit: boolean = false;
 
 
   onDelete(data: any): void {
-    console.log('Delete SFD:', data);
+    //console.log('Delete SFD:', data);
     this.selectedSfd = data; // Assign data to selectedSfd
     this.isDeleteConfirmationVisible = true; // Set visibility to true
   }
@@ -296,7 +306,7 @@ isEdit: boolean = false;
     if (this.selectedSfd) {
       this.apiService.delete(`sfd/sfd-details/${this.selectedSfd.id}/`).subscribe((res: any) => {
         this.toast.add({severity:'success', summary: 'Success', detail: 'SFD Deleted Successfully'});
-        console.log(res);
+        //console.log(res);
         // Refresh filtered data instead of all data
         if (this.selectedUnit && this.selectedShip) {
           this.loadTableData(this.selectedUnit.id, this.selectedShip.id, this.selectedDepartment?.id);
@@ -319,15 +329,15 @@ isEdit: boolean = false;
 
   // Filter Methods
   onUnitChange(): void {
-    console.log('Unit changed to:', this.selectedUnit);
+    //console.log('Unit changed to:', this.selectedUnit);
     let id = this.selectedUnit.id;
-    console.log("idCheck", id);
+    //console.log("idCheck", id);
     
     // Fetch ships for selected unit
     this.apiService.get(`master/ship/?unit_type=${id}`).subscribe((res: any) => {
       this.shipOptions = res.results;
-      console.log("response is ", res);
-      console.log("shipOption data", this.shipOptions);
+      //console.log("response is ", res);
+      //console.log("shipOption data", this.shipOptions);
     });
     
     // Clear ship selection and table data when unit changes
@@ -337,13 +347,18 @@ isEdit: boolean = false;
   }
 
   onShipChange(): void {
-    console.log('Ship changed to:', this.selectedShip);
+    //console.log('Ship changed to:', this.selectedShip);
     // Clear table data when ship changes
     this.tableData = [];
     
+    // Load equipment options for the selected ship
+    if (this.selectedShip) {
+      this.loadEquipmentOptions(this.selectedShip.id);
+    }
+    
     // Automatically load data if both unit and ship are selected
     if (this.selectedUnit && this.selectedShip) {
-      console.log('Both unit and ship selected, loading data...');
+      //console.log('Both unit and ship selected, loading data...');
       this.loadTableData(this.selectedUnit.id, this.selectedShip.id, this.selectedDepartment?.id);
     }
   }
@@ -372,7 +387,7 @@ isEdit: boolean = false;
 
   // Load table data for selected Unit + Ship + Department
   loadTableData(unitId: number, shipId: number, departmentId?: number) {
-    console.log('Loading table data for Unit ID:', unitId, 'Ship ID:', shipId, 'Department ID:', departmentId);
+    //console.log('Loading table data for Unit ID:', unitId, 'Ship ID:', shipId, 'Department ID:', departmentId);
     
     let apiUrl = `sfd/sfd-details/?ship=${shipId}`;
     if (departmentId) {
@@ -380,10 +395,10 @@ isEdit: boolean = false;
     }
     
     this.apiService.get(apiUrl).subscribe((res: any) => {
-      console.log('API Response:', res);
+      //console.log('API Response:', res);
       if (res.results && res.results.length > 0) {
         this.tableData = res.results;
-        console.log('Table data loaded:', this.tableData.length, 'records');
+        //console.log('Table data loaded:', this.tableData.length, 'records');
       } else {
         this.tableData = [];
         this.toast.add({
@@ -404,7 +419,7 @@ isEdit: boolean = false;
   }
 
   onLocationOnBoardChange(event: any): void {
-    console.log('Location On Board changed to:', event);
+    //console.log('Location On Board changed to:', event);
     if (event) {
       // Find the selected location object from the options array
       const selectedLocation = this.locationOnBoardOptions.find(location => location.id === event);
@@ -418,13 +433,23 @@ isEdit: boolean = false;
 
   onEquipmentChange(event: any): void {
    const eqp = this.equipmentOptions.find((equipment: any) => equipment.id === event);
-   console.log(eqp);
+   //console.log(eqp);
    this.sfdReferenceForm.patchValue({
     model: eqp.model,
     manufacturer: eqp.manufacturer,
     supplier: eqp.supplier,
-    department: parseInt(eqp.group?.department_id),
+    // Removed department auto-fill - user must manually select department
     
    });
+  }
+
+  // Load equipment options based on selected ship
+  loadEquipmentOptions(shipId: number): void {
+    this.apiService.get(`master/equipment/?is_dropdown=true&ship=${shipId}`).subscribe((res: any) => {
+      this.equipmentOptions = res.results || res;
+    }, (error) => {
+      console.error('Error loading equipment options:', error);
+      this.equipmentOptions = [];
+    });
   }
 }
